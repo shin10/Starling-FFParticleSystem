@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<particleEmitterConfig>
+	<animation>
+		<isAnimated value="0"/>
+		<loops value="1"/>
+		<firstFrame value="0"/>
+		<lastFrame value="-1"/>
+		<randomStartFrames value="0"/>
+	</animation>
+	<tinted value="1"/>
+	<spawnTime value="0.1" />
+	<fadeOutTime value="0.1" />
+	
+	<emitterType value="0"/>
+	<maxParticles value="8"/>
+	<sourcePosition x="500.00" y="250"/>
+	<sourcePositionVariance x="100.00" y="50.00"/>
+	<particleLifeSpan value="10.0"/>
+	<particleLifespanVariance value="5.0000"/>
+	<angle value="0.00"/>
+	<angleVariance value="360.00"/>
+	<startParticleSize value="50.00"/>
+	<startParticleSizeVariance value="50.00"/>
+	<finishParticleSize value="50.00"/>
+	<FinishParticleSizeVariance value="50.00"/>
+	<rotationStart value="0.00"/>
+	<rotationStartVariance value="0.00"/>
+	<rotationEnd value="0.00"/>
+	<rotationEndVariance value="10.00"/>
+	<duration value="-1.00"/>
+	
+	<gravity x="0" y="0"/>
+	<speed value="0.00"/>
+	<speedVariance value="0.00"/>
+	<radialAcceleration value="-180.00"/>
+	<radialAccelVariance value="0.00"/>
+	<tangentialAcceleration value="0.00"/>
+	<tangentialAccelVariance value="70.00"/>
+	
+	<maxRadius value="0.00"/>
+	<maxRadiusVariance value="0.00"/>
+	<minRadius value="0.00"/>
+	<rotatePerSecond value="0.00"/>
+	<rotatePerSecondVariance value="0.00"/>
+	
+	
+	<startColor red="1" green="1" blue="1" alpha="1"/>
+	<startColorVariance red="0.2" green="0.2" blue="0.2" alpha="0"/>
+	<finishColor red="1" green="1" blue="1" alpha="1"/>
+	<finishColorVariance red="0.2" green="0.2" blue="0.2" alpha="0"/>
+	
+	<blendFuncSource value="770"/>
+	<blendFuncDestination value="771"/>
+
+</particleEmitterConfig>

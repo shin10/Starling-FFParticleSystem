@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<TextureAtlas imagePath="taA.png">
+	
+ <SubTexture name="smokeA_0" x="4" y="1" width="119" height="119"/>
+ <SubTexture name="smokeA_1" x="131" y="0" width="121" height="119"/>
+ <SubTexture name="smokeA_2" x="262" y="2" width="118" height="119"/>
+ <SubTexture name="smokeA_3" x="388" y="0" width="112" height="119"/>
+ 
+ <SubTexture name="smokeA_4" x="3" y="128" width="120" height="120"/>
+ <SubTexture name="smokeA_5" x="132" y="130" width="121" height="117"/>
+ <SubTexture name="smokeA_6" x="260" y="130" width="121" height="116"/>
+ <SubTexture name="smokeA_7" x="387" y="127" width="121" height="122"/>
+ 	
+ <SubTexture name="smokeA_8" x="4" y="257" width="121" height="119"/>
+ <SubTexture name="smokeA_9" x="132" y="255" width="115" height="120"/>
+ <SubTexture name="smokeA_10" x="261" y="255" width="120" height="122"/>
+ <SubTexture name="smokeA_11" x="389" y="256" width="119" height="121"/>
+ 
+ <SubTexture name="smokeA_12" x="4" y="383" width="121" height="117"/>
+ <SubTexture name="smokeA_13" x="131" y="384" width="121" height="120"/>
+ <SubTexture name="smokeA_14" x="260" y="389" width="130" height="116"/>
+ <SubTexture name="smokeA_15" x="390" y="384" width="116" height="121"/>
+ 
+ <SubTexture name="smokeB_0" x="3" y="508" width="55" height="59"/>
+ <SubTexture name="smokeB_1" x="65" y="508" width="59" height="58"/>
+ <SubTexture name="smokeB_2" x="129" y="508" width="59" height="58"/>
+ <SubTexture name="smokeB_3" x="193" y="508" width="59" height="57"/>
+ 
+ <SubTexture name="smokeB_4" x="0" y="572" width="60" height="58"/>
+ <SubTexture name="smokeB_5" x="65" y="571" width="61" height="61"/>
+ <SubTexture name="smokeB_6" x="129" y="571" width="61" height="60"/>
+ <SubTexture name="smokeB_7" x="192" y="571" width="61" height="58"/>
+ 
+ <SubTexture name="smokeB_8" x="2" y="636" width="58" height="59"/>
+ <SubTexture name="smokeB_9" x="65" y="637" width="60" height="58"/>
+ <SubTexture name="smokeB_10" x="131" y="634" width="55" height="59"/>
+ <SubTexture name="smokeB_11" x="193" y="637" width="59" height="59"/>
+ 
+ <SubTexture name="smokeB_12" x="3" y="699" width="58" height="59"/>
+ <SubTexture name="smokeB_13" x="67" y="700" width="59" height="60"/>
+ <SubTexture name="smokeB_14" x="130" y="701" width="56" height="57"/>
+ <SubTexture name="smokeB_15" x="193" y="700" width="58" height="60"/>
+ 
+ 
+ <SubTexture name="smokeC" x="253" y="699" width="160" height="141"/>
+ 
+ <SubTexture name="ufo" x="216" y="840" width="246" height="128"/>
+ 
+ <SubTexture name="jet_0" x="269" y="968" width="237" height="61"/>
+ <SubTexture name="jet_1" x="0" y="760" width="216" height="137"/>
+ <SubTexture name="jet_2" x="253" y="508" width="246" height="191"/>
+ <SubTexture name="jet_3" x="0" y="968" width="269" height="97"/>
+ <SubTexture name="jet_4" x="0" y="1065" width="246" height="96"/>
+ 
+ <SubTexture name="laserGreen" x="506" y="31" width="99" height="13"/>
+ <SubTexture name="laserYellow" x="506" y="44" width="93" height="7"/>
+ 
+ <SubTexture name="ash_0" x="540" y="0" width="7" height="10"/>
+ <SubTexture name="ash_1" x="527" y="0" width="9" height="12"/>
+ <SubTexture name="ash_2" x="546" y="9" width="10" height="9"/>
+ <SubTexture name="ash_3" x="546" y="0" width="9" height="10"/>
+ 
+ <SubTexture name="ash_4" x="536" y="0" width="5" height="10"/>
+ <SubTexture name="ash_5" x="555" y="0" width="10" height="10"/>
+ <SubTexture name="ash_6" x="506" y="0" width="11" height="18"/>
+ <SubTexture name="ash_7" x="517" y="13" width="15" height="9"/>
+ 
+ <SubTexture name="ash_8" x="517" y="0" width="11" height="14"/>
+ <SubTexture name="ash_9" x="506" y="18" width="11" height="9"/>
+ <SubTexture name="ash_10" x="542" y="19" width="14" height="8"/>
+ <SubTexture name="ash_11" x="531" y="19" width="12" height="9"/>
+ 
+ <SubTexture name="ash_12" x="536" y="10" width="9" height="10"/>
+ <SubTexture name="ash_13" x="555" y="9" width="9" height="10"/>
+ <SubTexture name="ash_14" x="517" y="22" width="7" height="8"/>
+ <SubTexture name="ash_15" x="556" y="19" width="7" height="8"/>
+ 
+ <SubTexture name="timesSquare" x="1024" y="0" width="1024" height="576"/>
+ 
+</TextureAtlas>

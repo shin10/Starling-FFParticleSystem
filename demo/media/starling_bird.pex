@@ -1,0 +1,48 @@
+<particleEmitterConfig>
+  <animation>
+	  <isAnimated value="1"/>
+	  <randomStartFrames value="1"/>
+	  <atlas name="starling_bird.xml"/> <!-- JFYI -->
+	  <loops value="15"/>
+	  <firstFrame value="0"/>
+	  <lastFrame value="-1"/>
+  </animation>
+  <spawnTime value="0.0"/>
+  
+  <texture name="texture.png"/>
+  <sourcePosition x="-50.00" y="300.00"/>
+  <sourcePositionVariance x="0.00" y="200"/>
+  <speed value="150.00"/>
+  <speedVariance value="25"/>
+  <particleLifeSpan value="8"/>
+  <particleLifespanVariance value="0"/>
+  <angle value="345"/>
+  <angleVariance value="25.00"/>
+  <gravity x="0.00" y="0.00"/>
+  <radialAcceleration value="0.00"/>
+  <tangentialAcceleration value="0.00"/>
+  <radialAccelVariance value="0.00"/>
+  <tangentialAccelVariance value="0.00"/>
+  <startColor red="1" green="1" blue="1" alpha="1"/>
+  <startColorVariance red="0" green="0" blue="0" alpha="0"/>
+  <finishColor red="1" green="1" blue="1" alpha="1"/>
+  <finishColorVariance red="0" green="0" blue="0" alpha="0"/>
+  <maxParticles value="500"/>
+  <startParticleSize value="50"/>
+  <startParticleSizeVariance value="25"/>
+  <finishParticleSize value="25"/>
+  <FinishParticleSizeVariance value="20"/>
+  <duration value="-1.00"/>
+  <emitterType value="0"/>
+  <maxRadius value="100.00"/>
+  <maxRadiusVariance value="0.00"/>
+  <minRadius value="0.00"/>
+  <rotatePerSecond value="0.00"/>
+  <rotatePerSecondVariance value="0.00"/>
+  <blendFuncSource value="SOURCE_ALPHA"/>
+  <blendFuncDestination value="ONE_MINUS_SOURCE_ALPHA"/>
+  <rotationStart value="0.00"/>
+  <rotationStartVariance value="0.00"/>
+  <rotationEnd value="0.00"/>
+  <rotationEndVariance value="0.00"/>
+</particleEmitterConfig>

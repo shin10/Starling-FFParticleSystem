@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<particleEmitterConfig>	
+	<animation>
+		<isAnimated value="0"/>
+		<atlas name="taA.xml"/>
+		<loops value="1"/>
+		<firstFrame value="smokeA_0"/>
+		<lastFrame value="smokeA_15"/>
+		<randomStartFrames value="1"/>  
+	</animation>
+	<tinted value="1"/>
+	<spawnTime value="0.1" />
+	<fadeInTime value="0" />
+	<fadeInTime value="0.75" />
+	
+	<emitterType value="0"/>
+	<maxParticles value="100"/>
+	<texture name="drugs_particle.png"/>
+	<sourcePosition x="750" y="200"/>
+	<sourcePositionVariance x="20.00" y="5.00"/>
+	<particleLifeSpan value="6.0000"/>
+	<particleLifespanVariance value="0.0000"/>
+	<angle value="270.00"/>
+	<angleVariance value="10.00"/>
+	<startParticleSize value="25.00"/>
+	<startParticleSizeVariance value="8.00"/>
+	<finishParticleSize value="200.00"/>
+	<FinishParticleSizeVariance value="100.00"/>
+	<rotationStart value="-180.00"/>
+	<rotationStartVariance value="180.00"/>
+	<rotationEnd value="0.00"/>
+	<rotationEndVariance value="0.00"/>
+	<duration value="-1.00"/>
+	
+	<gravity x="15" y="-2"/>
+	<speed value="25.00"/>
+	<speedVariance value="13.00"/>
+	<radialAcceleration value="0.00"/>
+	<radialAccelVariance value="0.00"/>
+	<tangentialAcceleration value="0.00"/>
+	<tangentialAccelVariance value="0.00"/>
+	
+	<maxRadius value="0.00"/>
+	<maxRadiusVariance value="0.00"/>
+	<minRadius value="0.00"/>
+	<rotatePerSecond value="0.00"/>
+	<rotatePerSecondVariance value="0.00"/>
+	
+	
+	<startColor red="4" green="3" blue="2" alpha="0"/>
+	<startColorVariance red="0" green="0" blue="0" alpha="0"/>
+	<finishColor red="-10" green="-10" blue="-10" alpha="1"/>
+	<finishColorVariance red="0" green="0" blue="0" alpha="0"/>
+	
+	<blendFuncSource value="ONE"/>
+	<blendFuncDestination value="ONE_MINUS_SOURCE_ALPHA"/>
+
+</particleEmitterConfig>

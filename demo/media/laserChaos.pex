@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<particleEmitterConfig>	
+	<animation>
+		<isAnimated value="0"/>
+		<loops value="1"/>
+		<firstFrame value="laserGreen"/>
+		<lastFrame value="laserYellow"/>
+		<randomStartFrames value="1"/>
+	</animation>
+	<emitAngleAlignedRotation value="1"/>
+	<tinted value="1"/>
+	<spawnTime value="0.1" />
+	<fadeOutTime value="0" />
+	
+	<emitterType value="0"/>
+	<maxParticles value="20"/>
+	<sourcePosition x="600.00" y="150.0"/>
+	<sourcePositionVariance x="300.00" y="150.00"/>
+	<particleLifeSpan value="0.25"/>
+	<particleLifespanVariance value="0.1000"/>
+	<angle value="270.00"/>
+	<angleVariance value="90.00"/>
+	
+	<startParticleSize value="30.00"/>
+	<startParticleSizeVariance value="30.00"/>
+	<finishParticleSize value="100.00"/>
+	<FinishParticleSizeVariance value="50.00"/>
+	
+	<rotationStart value="0.00"/>
+	<rotationStartVariance value="0.00"/>
+	<rotationEnd value="0.00"/>
+	<rotationEndVariance value="0.00"/>
+	
+	<duration value="-1.00"/>
+	
+	<gravity x="0" y="0"/>
+	<speed value="1800.00"/>
+	<speedVariance value="600.00"/>
+	<radialAcceleration value="0.00"/>
+	<radialAccelVariance value="0.00"/>
+	<tangentialAcceleration value="0.00"/>
+	<tangentialAccelVariance value="0.00"/>
+	
+	<maxRadius value="0.00"/>
+	<maxRadiusVariance value="0.00"/>
+	<minRadius value="0.00"/>
+	<rotatePerSecond value="0.00"/>
+	<rotatePerSecondVariance value="0.00"/>
+	
+	<startColor red="1" green="1" blue="1" alpha="1"/>
+	<startColorVariance red="0.1" green="0.1" blue="0.1" alpha="0"/>
+	<finishColor red="1" green="1" blue="1" alpha="1"/>
+	<finishColorVariance red="0.1" green="0.1" blue="0.1" alpha="0"/>
+	
+	<blendFuncSource value="770"/>
+	<blendFuncDestination value="1"/>
+
+</particleEmitterConfig>

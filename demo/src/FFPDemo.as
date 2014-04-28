@@ -143,7 +143,7 @@ package
 			soUFOHit.sourceVarianceY = 0;
 			soUFOHit.updateFrameLUT();
 			
-			systems = [{'name': 'psBuildingLeft', 'keys': 'Q', 'active': true}, {'name': 'psSmokeScreen', 'keys': 'W', 'active': false}, {'name': 'psJets', 'keys': 'E', 'active': true}, {'name': 'psUFOs', 'keys': 'R', 'active': true}, {'name': 'psUFOBurningFX', 'keys': 'ZY', 'active': true}, {'name': 'psBuildingRight', 'keys': 'T', 'active': true}, {'name': 'psStarling', 'keys': 'U', 'active': false}, {'name': 'psBurningCarFireSmoke', 'keys': 'I', 'active': true}, {'name': 'psAshFar', 'keys': 'O', 'active': true}, {'name': 'psAshClose', 'keys': 'P', 'active': true}, {'name': 'psBurningCarSparks', 'keys': 'A', 'active': true}, {'name': 'psLaserChaos', 'keys': 'S', 'active': true}, {'name': 'psDust', 'keys': 'D', 'active': true}];
+			systems = [{'name': 'psBuildingLeft', 'keys': 'Q', 'active': true}, {'name': 'psSmokeScreen', 'keys': 'W', 'active': true}, {'name': 'psJets', 'keys': 'E', 'active': true}, {'name': 'psUFOs', 'keys': 'R', 'active': true}, {'name': 'psUFOBurningFX', 'keys': 'ZY', 'active': true}, {'name': 'psBuildingRight', 'keys': 'T', 'active': true}, {'name': 'psStarling', 'keys': 'U', 'active': false}, {'name': 'psBurningCarFireSmoke', 'keys': 'I', 'active': true}, {'name': 'psAshFar', 'keys': 'O', 'active': true}, {'name': 'psAshClose', 'keys': 'P', 'active': true}, {'name': 'psBurningCarSparks', 'keys': 'A', 'active': true}, {'name': 'psLaserChaos', 'keys': 'S', 'active': true}, {'name': 'psDust', 'keys': 'D', 'active': true}];
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);

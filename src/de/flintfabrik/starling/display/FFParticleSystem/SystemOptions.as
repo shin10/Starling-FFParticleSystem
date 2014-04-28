@@ -13,6 +13,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 	import de.flintfabrik.starling.display.FFParticleSystem.Frame;
 	import de.flintfabrik.starling.utils.ColorArgb;
 	import flash.display3D.Context3DBlendFactor;
+	import flash.display3D.textures.RectangleTexture;
 	import flash.geom.Rectangle;
 	import starling.textures.*;
 	
@@ -98,7 +99,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		public var angleVariance:Number = 0;
 		/**
 		 * Aligns the particles to their emit angle at birth.
-		 * 
+		 *
 		 * @see angle
 		 */
 		public var emitAngleAlignedRotation:Boolean = false;
@@ -183,7 +184,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		
 		/**
 		 * Creates a new SystemOptions instance.
-		 * 
+		 *
 		 * @see fromXML()
 		 * @see clone()
 		 */
@@ -505,12 +506,10 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		}
 		
 		/**
-		 * Parsies the texture atlas xml and stores subtexture positions/dimensions in a look up table.
+		 * Parses the texture atlas xml and stores subtexture positions/dimensions in a look up table.
 		 * If the texture is a SubTexture, it will also look for this frame in the texture atlas, to set this SubTexture as first frame.
 		 *
 		 * <p>Note: each frame will be stored once <i>per loop</i> in frameLUT since the modulo operator is expensive.</p>
-		 * @param	atlasXml
-		 * @param	texture
 		 */
 		public function updateFrameLUT():void
 		{
@@ -536,9 +535,9 @@ package de.flintfabrik.starling.display.FFParticleSystem
 					rect.width *= st.root.nativeWidth;
 					rect.height *= st.root.nativeHeight;
 					
-					var matches:XMLList = atlasXml.SubTexture.(@x == rect.x).(@y == rect.y).(@width == rect.width).(@height == rect.height);
+					var matches:XMLList = atlasXML.SubTexture.(@x == rect.x).(@y == rect.y).(@width == rect.width).(@height == rect.height);
 					
-					if (matches.length() >= 1 && firstFrame==0)
+					if (matches.length() >= 1 && firstFrame == 0)
 					{
 						var idx:int = matches[0].childIndex();
 						if (idx >= 0)
@@ -577,8 +576,16 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				if (texture is SubTexture)
 				{
 					//subtexture
-					var stex:SubTexture = texture as SubTexture;
-					mFrameLUT[0] = new Frame(stex.root.nativeWidth, stex.root.nativeHeight, stex.clipping.x * stex.root.nativeWidth, stex.clipping.y * stex.root.nativeHeight, stex.clipping.width * stex.root.nativeWidth, stex.clipping.height * stex.root.nativeHeight);
+					st = texture as SubTexture;
+					
+					mFrameLUT[0] = new Frame(
+							st.root.nativeWidth,
+							st.root.nativeHeight,
+							st.clipping.x * st.parent.width,
+							st.clipping.y * st.parent.height,
+							st.clipping.width * st.parent.width,
+							st.clipping.height * st.parent.height
+						);
 				}
 				else
 				{

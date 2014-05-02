@@ -93,8 +93,8 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		
 		public var sourceVarianceX:Number = 0;
 		public var sourceVarianceY:Number = 0;
-		public var particleLifeSpan:Number = 1;
-		public var particleLifespanVariance:Number = 0;
+		public var lifespan:Number = 1;
+		public var lifespanVariance:Number = 0;
 		public var angle:Number = 0;
 		public var angleVariance:Number = 0;
 		/**
@@ -132,6 +132,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		public var maxRadius:Number = 100;
 		public var maxRadiusVariance:Number = 0;
 		public var minRadius:Number = 0;
+		public var minRadiusVariance:Number = 0;
 		public var rotatePerSecond:Number = 0;
 		public var rotatePerSecondVariance:Number = 0;
 		
@@ -207,10 +208,6 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		 */
 		public function appendFromObject(object:Object):SystemOptions
 		{
-			if (texture)
-				this.texture = texture;
-			if (atlasXML)
-				this.atlasXML = atlasXML;
 			
 			for (var p:String in object)
 			{
@@ -250,8 +247,8 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.gravityY = this.gravityY;
 			target.emitterType = this.emitterType;
 			target.maxParticles = this.maxParticles;
-			target.particleLifeSpan = this.particleLifeSpan;
-			target.particleLifespanVariance = this.particleLifespanVariance;
+			target.lifespan = this.lifespan;
+			target.lifespanVariance = this.lifespanVariance;
 			target.startParticleSize = this.startParticleSize;
 			target.startParticleSizeVariance = this.startParticleSizeVariance;
 			target.finishParticleSize = this.finishParticleSize;
@@ -272,6 +269,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.maxRadius = this.maxRadius;
 			target.maxRadiusVariance = this.maxRadiusVariance;
 			target.minRadius = this.minRadius;
+			target.minRadiusVariance = this.minRadiusVariance;
 			target.rotatePerSecond = this.rotatePerSecond;
 			target.rotatePerSecondVariance = this.rotatePerSecondVariance;
 			target.startColor = this.startColor;
@@ -306,8 +304,110 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		}
 		
 		/**
+		 * Exports current settings to XML file.
+		 * @param	target
+		 * @return
+		 */
+		public function exportConfig(atlasXML:XML = null):XML
+		{
+			var tempAtlas:XML = atlasXML ? atlasXML : this.atlasXML;
+			var target:XML =  <particleEmitterConfig/>;
+			
+			target.angle.@value = isNaN(angle) ? 0 : angle.toFixed(2);
+			target.angleVariance.@value = isNaN(angleVariance) ? 0 : angleVariance.toFixed(2);
+			target.duration.@value = isNaN(duration) ? 0 : duration.toFixed(2);
+			target.emitterType.@value = isNaN(emitterType) ? 0 : emitterType.toFixed(2);
+			target.emitAngleAlignedRotation.@value = int(emitAngleAlignedRotation);
+			target.excactBounds.@value = int(excactBounds);
+			target.finishParticleSize.@value = isNaN(finishParticleSize) ? 10 : finishParticleSize.toFixed(2);
+			target.finishParticleSizeVariance.@value = isNaN(finishParticleSizeVariance) ? 0 : finishParticleSizeVariance.toFixed(2);
+			target.gravity.@x = isNaN(gravityX) ? 0 : gravityX.toFixed(2);
+			target.gravity.@y = isNaN(gravityY) ? 0 : gravityY.toFixed(2);
+			if (isAnimated || randomStartFrames)
+			{
+				if (!tempAtlas)
+					trace("Warning: atlasXML is not defined - frame names will be set as integers.");
+				target.animation.isAnimated.@value = int(isAnimated);
+				target.animation.firstFrame.@value = getFrameNameFromAtlas(firstFrame, tempAtlas);
+				target.animation.lastFrame.@value = getFrameNameFromAtlas(lastFrame, tempAtlas);
+				target.animation.loops.@value = loops;
+				target.animation.randomStartFrames.@value = int(randomStartFrames);
+			}
+			target.maxParticles.@value = isNaN(maxParticles) ? 0 : maxParticles.toFixed(2);
+			target.maxRadius.@value = isNaN(maxRadius) ? 0 : maxRadius.toFixed(2);
+			target.maxRadiusVariance.@value = isNaN(maxRadiusVariance) ? 0 : maxRadiusVariance.toFixed(2);
+			target.minRadius.@value = isNaN(minRadius) ? 0 : minRadius.toFixed(2);
+			target.minRadiusVariance.@value = isNaN(minRadiusVariance) ? 0 : minRadiusVariance.toFixed(2);
+			target.particleLifeSpan.@value = isNaN(lifespan) ? 0 : lifespan.toFixed(2);
+			target.particleLifespanVariance.@value = isNaN(lifespanVariance) ? 0 : lifespanVariance.toFixed(2);
+			target.radialAcceleration.@value = isNaN(radialAcceleration) ? 0 : radialAcceleration.toFixed(2);
+			target.radialAccelVariance.@value = isNaN(radialAccelerationVariance) ? 0 : radialAccelerationVariance.toFixed(2);
+			target.rotatePerSecond.@value = isNaN(rotatePerSecond) ? 0 : rotatePerSecond.toFixed(2);
+			target.rotatePerSecondVariance.@value = isNaN(rotatePerSecondVariance) ? 0 : rotatePerSecondVariance.toFixed(2);
+			target.rotationEnd.@value = isNaN(rotationEnd) ? 0 : rotationEnd.toFixed(2);
+			target.rotationEndVariance.@value = isNaN(rotationEndVariance) ? 0 : rotationEndVariance.toFixed(2);
+			target.rotationStart.@value = isNaN(rotationStart) ? 0 : rotationStart.toFixed(2);
+			target.rotationStartVariance.@value = isNaN(rotationStartVariance) ? 0 : rotationStartVariance.toFixed(2);
+			target.sourcePosition.@x = isNaN(sourceX) ? 0 : sourceX.toFixed(2);
+			target.sourcePosition.@y = isNaN(sourceY) ? 0 : sourceY.toFixed(2);
+			target.sourcePositionVariance.@x = isNaN(sourceVarianceX) ? 0 : sourceVarianceX.toFixed(2);
+			target.sourcePositionVariance.@y = isNaN(sourceVarianceY) ? 0 : sourceVarianceY.toFixed(2);
+			target.speed.@value = isNaN(speed) ? 0 : speed.toFixed(2);
+			target.speedVariance.@value = isNaN(speedVariance) ? 0 : speedVariance.toFixed(2);
+			target.startParticleSize.@value = isNaN(startParticleSize) ? 10 : startParticleSize.toFixed(2);
+			target.startParticleSizeVariance.@value = isNaN(startParticleSizeVariance) ? 0 : startParticleSizeVariance.toFixed(2);
+			target.tangentialAcceleration.@value = isNaN(tangentialAcceleration) ? 0 : tangentialAcceleration.toFixed(2);
+			target.tangentialAccelVariance.@value = isNaN(tangentialAccelerationVariance) ? 0 : tangentialAccelerationVariance.toFixed(2);
+			target.tinted.@value = int(tinted);
+			
+			target.startColor.@red = isNaN(startColor.red) ? 1 : startColor.red;
+			target.startColor.@green = isNaN(startColor.green) ? 1 : startColor.green;
+			target.startColor.@blue = isNaN(startColor.blue) ? 1 : startColor.blue;
+			target.startColor.@alpha = isNaN(startColor.alpha) ? 1 : startColor.alpha;
+			
+			target.startColorVariance.@red = isNaN(startColorVariance.red) ? 0 : startColorVariance.red;
+			target.startColorVariance.@green = isNaN(startColorVariance.green) ? 0 : startColorVariance.green;
+			target.startColorVariance.@blue = isNaN(startColorVariance.blue) ? 0 : startColorVariance.blue;
+			target.startColorVariance.@alpha = isNaN(startColorVariance.alpha) ? 0 : startColorVariance.alpha;
+			
+			target.finishColor.@red = isNaN(finishColor.red) ? 1 : finishColor.red;
+			target.finishColor.@green = isNaN(finishColor.green) ? 1 : finishColor.green;
+			target.finishColor.@blue = isNaN(finishColor.blue) ? 1 : finishColor.blue;
+			target.finishColor.@alpha = isNaN(finishColor.alpha) ? 1 : finishColor.alpha;
+			
+			target.finishColorVariance.@red = isNaN(finishColorVariance.red) ? 0 : finishColorVariance.red;
+			target.finishColorVariance.@green = isNaN(finishColorVariance.green) ? 0 : finishColorVariance.green;
+			target.finishColorVariance.@blue = isNaN(finishColorVariance.blue) ? 0 : finishColorVariance.blue;
+			target.finishColorVariance.@alpha = isNaN(finishColorVariance.alpha) ? 0 : finishColorVariance.alpha;
+			
+			target.blendFuncSource.@value = blendFuncSource.replace(/([A-Z])/g, '_$1').toUpperCase();
+			target.blendFuncDestination.@value = blendFuncDestination.replace(/([A-Z])/g, '_$1').toUpperCase();
+			
+			return target;
+		}
+		
+		private function getFrameNameFromAtlas(idx:int, atlasXML:XML = null):String
+		{
+			if (atlasXML == null)
+				return idx.toString();
+			var name:String = atlasXML.SubTexture[idx].@name;
+			if (atlasXML.SubTexture.(@name == name).length() == 1)
+			{
+				return name;
+			}
+			else
+			{
+				return idx.toString();
+			}
+		}
+		
+		/**
 		 * Interpretation of the .pex config XML
-		 * @param	config
+		 * @param	config The .pex config XML file
+		 * @param	texture	The texture used by the FFParticleSystem
+		 * @param	atlasXML TextureAtlas XML file necessary for animated Particles
+		 * @param	target An optional to write data
+		 * @return
 		 */
 		public static function fromXML(config:XML, texture:Texture, atlasXML:XML = null, target:SystemOptions = null):SystemOptions
 		{
@@ -325,12 +425,12 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.gravityY = parseFloat(config.gravity.attribute("y"));
 			target.emitterType = getIntValue(config.emitterType);
 			target.maxParticles = getIntValue(config.maxParticles);
-			target.particleLifeSpan = Math.max(0.01, getFloatValue(config.particleLifeSpan));
-			target.particleLifespanVariance = getFloatValue(config.particleLifespanVariance);
+			target.lifespan = Math.max(0.01, getFloatValue(config.particleLifeSpan));
+			target.lifespanVariance = getFloatValue(config.particleLifespanVariance);
 			target.startParticleSize = getFloatValue(config.startParticleSize);
 			target.startParticleSizeVariance = getFloatValue(config.startParticleSizeVariance);
 			target.finishParticleSize = getFloatValue(config.finishParticleSize);
-			target.finishParticleSizeVariance = getFloatValue(config.FinishParticleSizeVariance);
+			target.finishParticleSizeVariance = getFloatValue(config.finishParticleSizeVariance);
 			target.angle = getFloatValue(config.angle);
 			target.angleVariance = getFloatValue(config.angleVariance);
 			target.rotationStart = getFloatValue(config.rotationStart);
@@ -347,6 +447,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.maxRadius = getFloatValue(config.maxRadius);
 			target.maxRadiusVariance = getFloatValue(config.maxRadiusVariance);
 			target.minRadius = getFloatValue(config.minRadius);
+			target.minRadiusVariance = getFloatValue(config.minRadiusVariance);
 			target.rotatePerSecond = getFloatValue(config.rotatePerSecond);
 			target.rotatePerSecondVariance = getFloatValue(config.rotatePerSecondVariance);
 			target.startColor = getColor(config.startColor);
@@ -356,6 +457,13 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.blendFuncSource = getBlendFunc(config.blendFuncSource);
 			target.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
 			target.duration = getFloatValue(config.duration);
+			
+			if (isNaN(target.finishParticleSizeVariance))
+                target.finishParticleSizeVariance = getFloatValue(config.FinishParticleSizeVariance);
+            if (isNaN(target.lifespan))
+                target.lifespan = Math.max(0.01, getFloatValue(config.particleLifespan));
+            if (isNaN(target.lifespanVariance))
+                target.lifespanVariance = getFloatValue(config.particleLifeSpanVariance);
 			
 			// new introduced properties //
 			if (config.animation.length())
@@ -578,14 +686,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 					//subtexture
 					st = texture as SubTexture;
 					
-					mFrameLUT[0] = new Frame(
-							st.root.nativeWidth,
-							st.root.nativeHeight,
-							st.clipping.x * st.parent.width,
-							st.clipping.y * st.parent.height,
-							st.clipping.width * st.parent.width,
-							st.clipping.height * st.parent.height
-						);
+					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, st.clipping.x * st.parent.width, st.clipping.y * st.parent.height, st.clipping.width * st.parent.width, st.clipping.height * st.parent.height);
 				}
 				else
 				{

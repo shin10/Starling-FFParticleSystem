@@ -67,7 +67,7 @@ package de.flintfabrik.starling.display
 	 * <p>This extension has been kindly sponsored by the fabulous <a target="_top" href="http://colinnorthway.com/">Colin Northway</a>. :)</p>
 	 *
 	 * <a target="_top" href="http://www.flintfabrik.de/blog/">Live Demo</a>
-	 * 
+	 *
 	 * @author Michael Trenkler
 	 * @see http://flintfabrik.de
 	 * @see #FFParticleSystem()
@@ -167,6 +167,7 @@ package de.flintfabrik.starling.display
 		private var mMaxRadius:Number; // maxRadius
 		private var mMaxRadiusVariance:Number; // maxRadiusVariance
 		private var mMinRadius:Number; // minRadius
+		private var mMinRadiusVariance:Number; // minRadiusVariance
 		private var mRotatePerSecond:Number; // rotatePerSecond
 		private var mRotatePerSecondVariance:Number; // rotatePerSecondVariance
 		
@@ -245,57 +246,57 @@ package de.flintfabrik.starling.display
 		   <listing version="3.0">
 		   &lt;?xml version="1.0"?&gt;
 		   &lt;particleEmitterConfig&gt;
-			
-			   &lt;animation&gt;
-				   &lt;isAnimated value="1"/&gt;
-				   &lt;loops value="10"/&gt;
-				   &lt;firstFrame value="0"/&gt;
-				   &lt;lastFrame value="-1"/&gt;
-			   &lt;/animation&gt;
-				
-			   &lt;spawnTime value="0.02"/&gt;
-			   &lt;fadeInTime value="0.1"/&gt;
-			   &lt;fadeOutTime value="0.1"/&gt;
-			   &lt;tinted value="1"/&gt;
-			   &lt;emitAngleAlignedRotation value="1"/&gt;
-				
-			   &lt;texture name="texture.png"/&gt;
-			   &lt;sourcePosition x="300.00" y="300.00"/&gt;
-			   &lt;sourcePositionVariance x="0.00" y="200"/&gt;
-			   &lt;speed value="150.00"/&gt;
-			   &lt;speedVariance value="75"/&gt;
-			   &lt;particleLifeSpan value="10"/&gt;
-			   &lt;particleLifespanVariance value="2"/&gt;
-			   &lt;angle value="345"/&gt;
-			   &lt;angleVariance value="25.00"/&gt;
-			   &lt;gravity x="0.00" y="0.00"/&gt;
-			   &lt;radialAcceleration value="0.00"/&gt;
-			   &lt;tangentialAcceleration value="0.00"/&gt;
-			   &lt;radialAccelVariance value="0.00"/&gt;
-			   &lt;tangentialAccelVariance value="0.00"/&gt;
-			   &lt;startColor red="1" green="1" blue="1" alpha="1"/&gt;
-			   &lt;startColorVariance red="1" green="1" blue="1" alpha="0"/&gt;
-			   &lt;finishColor red="1" green="1" blue="1" alpha="1"/&gt;
-			   &lt;finishColorVariance red="0" green="0" blue="0" alpha="0"/&gt;
-			   &lt;maxParticles value="500"/&gt;
-			   &lt;startParticleSize value="50"/&gt;
-			   &lt;startParticleSizeVariance value="25"/&gt;
-			   &lt;finishParticleSize value="25"/&gt;
-			   &lt;FinishParticleSizeVariance value="25"/&gt;
-			   &lt;duration value="-1.00"/&gt;
-			   &lt;emitterType value="0"/&gt;
-			   &lt;maxRadius value="100.00"/&gt;
-			   &lt;maxRadiusVariance value="0.00"/&gt;
-			   &lt;minRadius value="0.00"/&gt;
-			   &lt;rotatePerSecond value="0.00"/&gt;
-			   &lt;rotatePerSecondVariance value="0.00"/&gt;
-			   &lt;blendFuncSource value="770"/&gt;
-			   &lt;blendFuncDestination value="771"/&gt;
-			   &lt;rotationStart value="0.00"/&gt;
-			   &lt;rotationStartVariance value="0.00"/&gt;
-			   &lt;rotationEnd value="0.00"/&gt;
-			   &lt;rotationEndVariance value="0.00"/&gt;
-			   &lt;emitAngleAlignedRotation value="0"/&gt;
+		
+		   &lt;animation&gt;
+		   &lt;isAnimated value="1"/&gt;
+		   &lt;loops value="10"/&gt;
+		   &lt;firstFrame value="0"/&gt;
+		   &lt;lastFrame value="-1"/&gt;
+		   &lt;/animation&gt;
+		
+		   &lt;spawnTime value="0.02"/&gt;
+		   &lt;fadeInTime value="0.1"/&gt;
+		   &lt;fadeOutTime value="0.1"/&gt;
+		   &lt;tinted value="1"/&gt;
+		   &lt;emitAngleAlignedRotation value="1"/&gt;
+		
+		   &lt;texture name="texture.png"/&gt;
+		   &lt;sourcePosition x="300.00" y="300.00"/&gt;
+		   &lt;sourcePositionVariance x="0.00" y="200"/&gt;
+		   &lt;speed value="150.00"/&gt;
+		   &lt;speedVariance value="75"/&gt;
+		   &lt;particleLifeSpan value="10"/&gt;
+		   &lt;particleLifespanVariance value="2"/&gt;
+		   &lt;angle value="345"/&gt;
+		   &lt;angleVariance value="25.00"/&gt;
+		   &lt;gravity x="0.00" y="0.00"/&gt;
+		   &lt;radialAcceleration value="0.00"/&gt;
+		   &lt;tangentialAcceleration value="0.00"/&gt;
+		   &lt;radialAccelVariance value="0.00"/&gt;
+		   &lt;tangentialAccelVariance value="0.00"/&gt;
+		   &lt;startColor red="1" green="1" blue="1" alpha="1"/&gt;
+		   &lt;startColorVariance red="1" green="1" blue="1" alpha="0"/&gt;
+		   &lt;finishColor red="1" green="1" blue="1" alpha="1"/&gt;
+		   &lt;finishColorVariance red="0" green="0" blue="0" alpha="0"/&gt;
+		   &lt;maxParticles value="500"/&gt;
+		   &lt;startParticleSize value="50"/&gt;
+		   &lt;startParticleSizeVariance value="25"/&gt;
+		   &lt;finishParticleSize value="25"/&gt;
+		   &lt;FinishParticleSizeVariance value="25"/&gt;
+		   &lt;duration value="-1.00"/&gt;
+		   &lt;emitterType value="0"/&gt;
+		   &lt;maxRadius value="100.00"/&gt;
+		   &lt;maxRadiusVariance value="0.00"/&gt;
+		   &lt;minRadius value="0.00"/&gt;
+		   &lt;rotatePerSecond value="0.00"/&gt;
+		   &lt;rotatePerSecondVariance value="0.00"/&gt;
+		   &lt;blendFuncSource value="770"/&gt;
+		   &lt;blendFuncDestination value="771"/&gt;
+		   &lt;rotationStart value="0.00"/&gt;
+		   &lt;rotationStartVariance value="0.00"/&gt;
+		   &lt;rotationEnd value="0.00"/&gt;
+		   &lt;rotationEndVariance value="0.00"/&gt;
+		   &lt;emitAngleAlignedRotation value="0"/&gt;
 		   &lt;/particleEmitterConfig&gt;
 		   </listing>
 		 *
@@ -403,13 +404,10 @@ package de.flintfabrik.starling.display
 			if (mEmitterType == EMITTER_TYPE_RADIAL)
 			{
 				particle.emitRotation += particle.emitRotationDelta * passedTime;
-				particle.emitRadius -= particle.emitRadiusDelta * passedTime;
+				particle.emitRadius += particle.emitRadiusDelta * passedTime;
 				var angle:uint = (particle.emitRotation * 325.94932345220164765467394738691) & 2047;
 				particle.x = mEmitterX - sCosLUT[angle] * particle.emitRadius;
 				particle.y = mEmitterY - sSinLUT[angle] * particle.emitRadius;
-				
-				if (particle.emitRadius < mMinRadius)
-					particle.currentTime = particle.totalTime;
 			}
 			else if (particle.radialAcceleration || particle.tangentialAcceleration)
 			{
@@ -770,7 +768,7 @@ package de.flintfabrik.starling.display
 			{
 				if (mTexture is SubTexture)
 				{
-					var st:SubTexture = mTexture as SubTexture;
+					var st:SubTexture = SubTexture(mTexture);
 					var frame:Frame = new Frame(1, 1, st.clipping.x, st.clipping.y, st.clipping.width, st.clipping.height);
 					frame.particleHalfWidth = (mTexture.width) >> 1;
 					frame.particleHalfHeight = (mTexture.height) >> 1;
@@ -921,6 +919,8 @@ package de.flintfabrik.starling.display
 			
 			particle.emitRadius = mMaxRadius + mMaxRadiusVariance * (((sRandomSeed = (sRandomSeed * 16807) & 0x7FFFFFFF) / 0x40000000) - 1.0);
 			particle.emitRadiusDelta = mMaxRadius / lifespan;
+			particle.emitRadius = mMaxRadius + mMaxRadiusVariance * (((sRandomSeed = (sRandomSeed * 16807) & 0x7FFFFFFF) / 0x40000000) - 1.0);
+			particle.emitRadiusDelta = (mMinRadius + mMinRadiusVariance * (((sRandomSeed = (sRandomSeed * 16807) & 0x7FFFFFFF) / 0x40000000) - 1.0) - particle.emitRadius) / lifespan;
 			particle.emitRotation = mEmitAngle + mEmitAngleVariance * (((sRandomSeed = (sRandomSeed * 16807) & 0x7FFFFFFF) / 0x40000000) - 1.0);
 			particle.emitRotationDelta = mRotatePerSecond + mRotatePerSecondVariance * (((sRandomSeed = (sRandomSeed * 16807) & 0x7FFFFFFF) / 0x40000000) - 1.0);
 			particle.radialAcceleration = mRadialAcceleration + mRadialAccelerationVariance * (((sRandomSeed = (sRandomSeed * 16807) & 0x7FFFFFFF) / 0x40000000) - 1.0);
@@ -1190,8 +1190,10 @@ package de.flintfabrik.starling.display
 				var poolIdx:int = sParticlePool.length;
 				
 				sParticlePool.fixed = false;
-				while (particleIdx) {
+				while (particleIdx)
+				{
 					mParticles[--particleIdx] = sParticlePool[--poolIdx];
+					mParticles[particleIdx].active = false;
 					sParticlePool[poolIdx] = null;
 				}
 				sParticlePool.length = poolIdx;
@@ -1246,8 +1248,8 @@ package de.flintfabrik.starling.display
 			emitter.y = mEmitterY = Number(systemOptions.sourceY);
 			mEmitterXVariance = Number(systemOptions.sourceVarianceX);
 			mEmitterYVariance = Number(systemOptions.sourceVarianceY);
-			mLifespan = Number(systemOptions.particleLifeSpan);
-			mLifespanVariance = Number(systemOptions.particleLifespanVariance);
+			mLifespan = Number(systemOptions.lifespan);
+			lifespanVariance = Number(systemOptions.lifespanVariance);
 			mEmitAngle = Number(systemOptions.angle) * DEG2RAD;
 			mEmitAngleVariance = Number(systemOptions.angleVariance) * DEG2RAD;
 			mStartSize = Number(systemOptions.startParticleSize);
@@ -1300,11 +1302,91 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
+		 * Returns current properties to SystemOptions Object
+		 * @param	target A SystemOptions instance
+		 */
+		public function exportSystemOptions(target:SystemOptions = null):SystemOptions
+		{
+			if (!target)
+				target = new SystemOptions(mTexture);
+			
+			const RAD2DEG:Number = 180 / Math.PI;
+			
+			target.isAnimated = mTextureAnimation;
+			target.loops = mAnimationLoops;
+			target.firstFrame = mFirstFrame;
+			target.lastFrame = mLastFrame;
+			target.randomStartFrames = mRandomStartFrames;
+			target.tinted = mTinted;
+			target.spawnTime = mSpawnTime;
+			target.fadeInTime = mFadeInTime;
+			target.fadeOutTime = mFadeOutTime;
+			target.emitterType = mEmitterType;
+			target.maxParticles = mMaxNumParticles;
+			target.sourceX = mEmitterX;
+			target.sourceY = mEmitterY;
+			target.sourceVarianceX = mEmitterXVariance;
+			target.sourceVarianceY = mEmitterYVariance;
+			target.lifespan = mLifespan;
+			target.lifespanVariance = mLifespanVariance;
+			target.angle = mEmitAngle * RAD2DEG;
+			target.angleVariance = mEmitAngleVariance * RAD2DEG;
+			target.startParticleSize = mStartSize;
+			target.startParticleSizeVariance = mStartSizeVariance;
+			target.finishParticleSize = mEndSize;
+			target.finishParticleSizeVariance = mEndSizeVariance;
+			target.rotationStart = mStartRotation * RAD2DEG;
+			target.rotationStartVariance = mStartRotationVariance * RAD2DEG;
+			target.rotationEnd = mEndRotation * RAD2DEG;
+			target.rotationEndVariance = mEndRotationVariance * RAD2DEG;
+			target.duration = mEmissionTimePredefined == Number.MAX_VALUE ? -1 : mEmissionTimePredefined;
+			
+			target.gravityX = mGravityX;
+			target.gravityY = mGravityY;
+			target.speed = mSpeed;
+			target.speedVariance = mSpeedVariance;
+			target.radialAcceleration = mRadialAcceleration;
+			target.radialAccelerationVariance = mRadialAccelerationVariance;
+			target.tangentialAcceleration = mTangentialAcceleration;
+			target.tangentialAccelerationVariance = mTangentialAccelerationVariance;
+			
+			target.maxRadius = mMaxRadius;
+			target.maxRadiusVariance = mMaxRadiusVariance;
+			target.minRadius = mMinRadius;
+			target.minRadiusVariance = mMinRadiusVariance;
+			target.rotatePerSecond = mRotatePerSecond;
+			target.rotatePerSecondVariance = mRotatePerSecondVariance;
+			
+			target.startColor = mStartColor;
+			target.startColorVariance = mStartColorVariance;
+			target.finishColor = mEndColor;
+			target.finishColorVariance = mEndColorVariance;
+			
+			target.blendFuncSource = mBlendFactorSource;
+			target.blendFuncDestination = mBlendFactorDestination;
+			target.emitAngleAlignedRotation = mEmitAngleAlignedRotation;
+			
+			target.excactBounds = mExactBounds;
+			target.texture = mTexture;
+			
+			target.customFunction = mCustomFunc;
+			target.sortFunction = mSortFunction;
+			target.forceSortFlag = forceSortFlag;
+			
+			target.mFrameLUT = mFrameLUT;
+			
+			target.firstFrame = mFirstFrame;
+			target.lastFrame = mLastFrame;
+			
+			return target;
+		}
+		
+		/**
 		 * Removes the system from the juggler.
 		 */
 		public function pause():void
 		{
-			if(automaticJugglerManagement)
+			if (automaticJugglerManagement)
 				Starling.juggler.remove(this);
 			mPlaying = false;
 		}
@@ -1452,7 +1534,7 @@ package de.flintfabrik.starling.display
 							var next:DisplayObject = parent.getChildAt(last);
 							if (next is FFParticleSystem)
 							{
-								var nextps:FFParticleSystem = next as FFParticleSystem;
+								var nextps:FFParticleSystem = FFParticleSystem(next);
 								
 								if (nextps.mParticles && !nextps.isStateChange(mTinted, alpha, mTexture, mSmoothing, blendMode, mBlendFactorSource, mBlendFactorDestination, mFilter))
 								{
@@ -1566,7 +1648,7 @@ package de.flintfabrik.starling.display
 		 */
 		public function resume():void
 		{
-			if(automaticJugglerManagement)
+			if (automaticJugglerManagement)
 				Starling.juggler.add(this);
 			mPlaying = true;
 		}
@@ -1604,11 +1686,11 @@ package de.flintfabrik.starling.display
 			mEmissionTime = 0.0;
 			mPlaying = false;
 			
+			if (automaticJugglerManagement)
+				Starling.juggler.remove(this);
+			
 			if (clear)
 			{
-				if (automaticJugglerManagement)
-					Starling.juggler.remove(this);
-				
 				returnParticlesToPool();
 				if (!mCompleted)
 				{
@@ -1707,6 +1789,7 @@ package de.flintfabrik.starling.display
 		 * The number of particles, currently fitting into the vertexData instance of the system. (Not necessaryly all of them are visible)
 		 */
 		[Inline]
+		
 		final public function get capacity():int
 		{
 			return mVertexData ? mVertexData.numVertices / 4 : 0;
@@ -2073,6 +2156,7 @@ package de.flintfabrik.starling.display
 		public function set lifespan(value:Number):void
 		{
 			mLifespan = Math.max(0.01, value);
+			mLifespanVariance = Math.min(mLifespan, mLifespanVariance);
 			updateEmissionRate();
 		}
 		
@@ -2088,7 +2172,8 @@ package de.flintfabrik.starling.display
 		
 		public function set lifespanVariance(value:Number):void
 		{
-			mLifespanVariance = value;
+			mLifespanVariance = Math.min(mLifespan, value);
+			;
 		}
 		
 		/**
@@ -2174,6 +2259,20 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
+		 * The minimal emitter radius variance.
+		 * @see #EMITTER_TYPE_RADIAL
+		 */
+		public function get minRadiusVariance():Number
+		{
+			return mMinRadiusVariance;
+		}
+		
+		public function set minRadiusVariance(value:Number):void
+		{
+			mMinRadiusVariance = value;
+		}
+		
+		/**
 		 * The number of unused particles remaining in the particle pool.
 		 */
 		public static function get particlesInPool():uint
@@ -2184,7 +2283,7 @@ package de.flintfabrik.starling.display
 		
 		/**
 		 * Whether the system is playing or paused.
-		 * 
+		 *
 		 * <p><strong>Note:</strong> If you're not using automaticJugglermanagement the returned value may be wrong.</p>
 		 */
 		public function get playing():Boolean
@@ -2288,8 +2387,8 @@ package de.flintfabrik.starling.display
 				mSmoothing = value;
 		}
 		
-		
 		public var forceSortFlag:Boolean = false;
+		
 		/**
 		 * A custom function that can be set to sort the Vector of particles.
 		 * It will only be called if particles get added/removed.

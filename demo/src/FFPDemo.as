@@ -112,7 +112,7 @@ package
 		private var soLaserChaos:SystemOptions = SystemOptions.fromXML(laserChaosConfig, atlasTexture, atlasXML);
 		private var soBurningCarSparks:SystemOptions = SystemOptions.fromXML(sparksConfig, atlasTexture, atlasXML);
 		private var soAshFar:SystemOptions = SystemOptions.fromXML(ashConfig, atlasTexture, atlasXML);
-		private var soAshClose:SystemOptions = (soAshFar.clone()).appendFromObject({maxParticles: 100, particleLifeSpan: 3, particleLifespanVariance: 0.1, firstFrameName: "smokeA_0", lastFrameName: "smokeB_15", startParticleSize: 3.00, startParticleSizeVariance: 1, finishParticleSize: 3, finishParticleSizeVariance: 1});
+		private var soAshClose:SystemOptions = (soAshFar.clone()).appendFromObject({maxParticles: 100, lifespan: 3, lifespanVariance: 0.1, firstFrameName: "smokeA_0", lastFrameName: "smokeB_15", startParticleSize: 3.00, startParticleSizeVariance: 1, finishParticleSize: 3, finishParticleSizeVariance: 1});
 		private var soUFOBurningFX:SystemOptions = SystemOptions.fromXML(burningConfig, atlasTexture, atlasXML).appendFromObject({sourceX: -100, sourceY: -100});
 		private var soUFOs:SystemOptions = SystemOptions.fromXML(ufoConfig, texUFO).appendFromObject({customFunction: customFunctionUFO});
 		private var soDust:SystemOptions = SystemOptions.fromXML(dustConfig, atlasTexture, atlasXML);
@@ -135,8 +135,8 @@ package
 			soUFOHit.finishParticleSizeVariance = 2;
 			soUFOHit.lastFrameName = "ash_8";
 			soUFOHit.maxParticles = 300;
-			soUFOHit.particleLifeSpan = .5;
-			soUFOHit.particleLifespanVariance = .25;
+			soUFOHit.lifespan = .5;
+			soUFOHit.lifespanVariance = .25;
 			soUFOHit.startColor = new ColorArgb(1, 1, 1.5, 1);
 			soUFOHit.startColorVariance = new ColorArgb(0, 0, .5, 0);
 			soUFOHit.sourceVarianceX = 0;
@@ -273,6 +273,7 @@ package
 					ufo.colorGreen = 0.2;
 					ufo.colorBlue = 0.2;
 					ufo.radialAcceleration = 0;
+					
 					var ps:FFParticleSystem;
 					if (!ufo.customValues)
 					{

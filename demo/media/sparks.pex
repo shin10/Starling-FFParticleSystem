@@ -23,7 +23,7 @@
 	<startParticleSize value="1.00"/>
 	<startParticleSizeVariance value="0.50"/>
 	<finishParticleSize value="1.00"/>
-	<FinishParticleSizeVariance value="0.50"/>
+	<finishParticleSizeVariance value="0.50"/>
 	
 	<rotationStart value="0.00"/>
 	<rotationStartVariance value="360.00"/>

@@ -311,7 +311,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		public function exportConfig(atlasXML:XML = null):XML
 		{
 			var tempAtlas:XML = atlasXML ? atlasXML : this.atlasXML;
-			var target:XML =  <particleEmitterConfig/>;
+			var target:XML =   <particleEmitterConfig/>;
 			
 			target.angle.@value = isNaN(angle) ? 0 : angle.toFixed(2);
 			target.angleVariance.@value = isNaN(angleVariance) ? 0 : angleVariance.toFixed(2);
@@ -323,7 +323,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.finishParticleSizeVariance.@value = isNaN(finishParticleSizeVariance) ? 0 : finishParticleSizeVariance.toFixed(2);
 			target.gravity.@x = isNaN(gravityX) ? 0 : gravityX.toFixed(2);
 			target.gravity.@y = isNaN(gravityY) ? 0 : gravityY.toFixed(2);
-			if (isAnimated || randomStartFrames)
+			if (isAnimated || randomStartFrames || firstFrame != 0)
 			{
 				if (!tempAtlas)
 					trace("Warning: atlasXML is not defined - frame names will be set as integers.");
@@ -459,11 +459,11 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.duration = getFloatValue(config.duration);
 			
 			if (isNaN(target.finishParticleSizeVariance))
-                target.finishParticleSizeVariance = getFloatValue(config.FinishParticleSizeVariance);
-            if (isNaN(target.lifespan))
-                target.lifespan = Math.max(0.01, getFloatValue(config.particleLifespan));
-            if (isNaN(target.lifespanVariance))
-                target.lifespanVariance = getFloatValue(config.particleLifeSpanVariance);
+				target.finishParticleSizeVariance = getFloatValue(config.FinishParticleSizeVariance);
+			if (isNaN(target.lifespan))
+				target.lifespan = Math.max(0.01, getFloatValue(config.particleLifespan));
+			if (isNaN(target.lifespanVariance))
+				target.lifespanVariance = getFloatValue(config.particleLifeSpanVariance);
 			
 			// new introduced properties //
 			if (config.animation.length())

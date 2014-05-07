@@ -550,12 +550,14 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		
 		private static function getIntValue(element:XMLList):int
 		{
-			return parseInt(element.attribute("value"));
+			var result:int = parseInt(element.attribute("value"));
+			return isNaN(result) ? 0 : result;
 		}
 		
 		private static function getFloatValue(element:XMLList):Number
 		{
-			return parseFloat(element.attribute("value"));
+			var result:Number = parseFloat(element.attribute("value"));
+			return isNaN(result) ? 0 : result;
 		}
 		
 		private static function getColor(element:XMLList):ColorArgb

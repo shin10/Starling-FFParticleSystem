@@ -1275,8 +1275,9 @@ package de.flintfabrik.starling.display
 			mMaxRadius = Number(systemOptions.maxRadius);
 			mMaxRadiusVariance = Number(systemOptions.maxRadiusVariance);
 			minRadius = Number(systemOptions.minRadius);
-			mRotatePerSecond = Number(systemOptions.rotatePerSecond);
-			mRotatePerSecondVariance = Number(systemOptions.rotatePerSecondVariance);
+			mMinRadiusVariance = Number(systemOptions.minRadiusVariance);
+			mRotatePerSecond = Number(systemOptions.rotatePerSecond) * DEG2RAD;
+			mRotatePerSecondVariance = Number(systemOptions.rotatePerSecondVariance) *DEG2RAD;
 			
 			mStartColor = systemOptions.startColor;
 			mStartColorVariance = systemOptions.startColorVariance;
@@ -1354,8 +1355,8 @@ package de.flintfabrik.starling.display
 			target.maxRadiusVariance = mMaxRadiusVariance;
 			target.minRadius = mMinRadius;
 			target.minRadiusVariance = mMinRadiusVariance;
-			target.rotatePerSecond = mRotatePerSecond;
-			target.rotatePerSecondVariance = mRotatePerSecondVariance;
+			target.rotatePerSecond = mRotatePerSecond * RAD2DEG;
+			target.rotatePerSecondVariance = mRotatePerSecondVariance * RAD2DEG;
 			
 			target.startColor = mStartColor;
 			target.startColorVariance = mStartColorVariance;

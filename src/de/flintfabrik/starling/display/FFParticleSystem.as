@@ -90,6 +90,8 @@ package de.flintfabrik.starling.display
 		 * @see #stop()
 		 */
 		public static var autoClearOnComplete:Boolean = true;
+		public var autoClearOnComplete:Boolean = FFParticleSystem.autoClearOnComplete;
+		
 		
 		/**
 		 * Set this Boolean to automatically add/remove the system to/from Starling's Juggler, on calls of start()/stop().
@@ -374,15 +376,12 @@ package de.flintfabrik.starling.display
 		
 		private function addedToStageHandler(e:starling.events.Event):void
 		{
-			mPremultipliedAlpha = texture.premultipliedAlpha;
-			mEmissionRate = mMaxNumParticles / mLifespan;
-			mEmissionTime = 0.0;
-			mFrameTime = 0.0;
 			mMaxCapacity = mMaxNumParticles ? Math.min(MAX_CAPACITY, mMaxNumParticles) : MAX_CAPACITY;
 			
-			if (e)
+			if (e){
 				getParticlesFromPool();
-		
+				if(mPlaying) start(mEmissionTime);
+			}
 		}
 		
 		/**
@@ -487,6 +486,8 @@ package de.flintfabrik.starling.display
 				else
 				{
 					stop(autoClearOnComplete);
+					complete();
+					return;
 				}
 				return;
 			}
@@ -521,6 +522,8 @@ package de.flintfabrik.starling.display
 					if (mNumParticles == 0 && mEmissionTime < 0)
 					{
 						stop(autoClearOnComplete);
+						complete();
+						return;
 					}
 				}
 			}
@@ -553,7 +556,9 @@ package de.flintfabrik.starling.display
 			}
 			else if (!mCompleted && mNumParticles == 0)
 			{
-				stop(autoClearOnComplete)
+				stop(autoClearOnComplete);
+				complete();
+				return;
 			}
 			
 			// update vertex data
@@ -1019,6 +1024,7 @@ package de.flintfabrik.starling.display
 			sInstances.splice(sInstances.indexOf(this), 1);
 			removeEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 			stop(true);
+			complete();
 			mBatched = false;
 			super.filter = mFilter = null;
 			removeFromParent();
@@ -1290,6 +1296,7 @@ package de.flintfabrik.starling.display
 			
 			exactBounds = Boolean(systemOptions.excactBounds);
 			mTexture = systemOptions.texture;
+			mPremultipliedAlpha = mTexture.premultipliedAlpha;
 			
 			mCustomFunc = systemOptions.customFunction;
 			mSortFunction = systemOptions.sortFunction;
@@ -1660,7 +1667,7 @@ package de.flintfabrik.starling.display
 		 */
 		public function start(duration:Number = 0):void
 		{
-			if (mEmissionRate != 0)
+			if (mEmissionRate != 0 && !mCompleted)
 			{
 				if (duration == 0)
 				{
@@ -1671,7 +1678,6 @@ package de.flintfabrik.starling.display
 					duration = Number.MAX_VALUE;
 				}
 				mPlaying = true;
-				mCompleted = false;
 				mEmissionTime = duration;
 				if (automaticJugglerManagement)
 					Starling.juggler.add(this);
@@ -1690,15 +1696,41 @@ package de.flintfabrik.starling.display
 			if (automaticJugglerManagement)
 				Starling.juggler.remove(this);
 			
-			if (clear)
-			{
+			if (clear){
 				returnParticlesToPool();
-				if (!mCompleted)
-				{
-					mCompleted = true;
-					dispatchEventWith(starling.events.Event.COMPLETE);
-				}
+				complete();
 			}
+		}
+		
+		/**
+		 * Setting the complete state and throwing the event.
+		 */
+		private function complete():void {
+			if (!mCompleted)
+			{
+				mCompleted = true;
+				dispatchEventWith(starling.events.Event.COMPLETE);
+			}
+		}
+		
+		/**
+		 * Resets complete state and enables the system to play again if it has not been disposed.
+		 * @return
+		 */
+		public function reset():Boolean {
+			if (!mDisposed) {
+				mEmissionRate = mMaxNumParticles / mLifespan;
+				mFrameTime = 0.0;
+				mPlaying = false;
+				while(mNumParticles){
+					mParticles[--mNumParticles].active = false;
+				}
+				mMaxCapacity = mMaxNumParticles ? Math.min(MAX_CAPACITY, mMaxNumParticles) : MAX_CAPACITY;
+				mCompleted = false;
+				if (!mParticles) getParticlesFromPool();
+				return mParticles != null;
+			}
+			return false;
 		}
 		
 		private function returnParticlesToPool():void
@@ -1794,6 +1826,15 @@ package de.flintfabrik.starling.display
 		final public function get capacity():int
 		{
 			return mVertexData ? mVertexData.numVertices / 4 : 0;
+		}
+		
+		/**
+		 * Returns complete state of the system. The value is true if the system is done or has been
+		 * stopped with the parameter clear.
+		 */
+		
+		public function get completed():Boolean {
+			return mCompleted;
 		}
 		
 		/**

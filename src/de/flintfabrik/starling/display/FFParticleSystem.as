@@ -90,8 +90,18 @@ package de.flintfabrik.starling.display
 		 * @see #stop()
 		 */
 		public static var autoClearOnComplete:Boolean = true;
+		/**
+		 * If the systems duration exceeds as well as all particle lifespans, a complete event is fired and
+		 * the system will be stopped. If this value is set to true, the particles will be returned to the pool.
+		 * This does not affect any manual calls of stop.
+		 * @see #start()
+		 * @see #stop()
+		 */
 		public var autoClearOnComplete:Boolean = FFParticleSystem.autoClearOnComplete;
-		
+		/**
+		 * Forces the the sort flag for custom sorting on every frame instead of setting it when particles are removed.
+		 */
+		public var forceSortFlag:Boolean = false;
 		
 		/**
 		 * Set this Boolean to automatically add/remove the system to/from Starling's Juggler, on calls of start()/stop().
@@ -118,6 +128,7 @@ package de.flintfabrik.starling.display
 		private var mSmoothing:String = TextureSmoothing.BILINEAR;
 		private var mSortFunction:Function = undefined;
 		private var mSpawnTime:Number = 0;
+		private var mSystemAlpha:Number = 1;
 		private var mTexture:Texture;
 		private var mTinted:Boolean = false;
 		private var mExactBounds:Boolean = false;
@@ -378,9 +389,11 @@ package de.flintfabrik.starling.display
 		{
 			mMaxCapacity = mMaxNumParticles ? Math.min(MAX_CAPACITY, mMaxNumParticles) : MAX_CAPACITY;
 			
-			if (e){
+			if (e)
+			{
 				getParticlesFromPool();
-				if(mPlaying) start(mEmissionTime);
+				if (mPlaying)
+					start(mEmissionTime);
 			}
 		}
 		
@@ -1004,16 +1017,16 @@ package de.flintfabrik.starling.display
 			particle.fadeOutFactor = 1;
 		}
 		
-		private var mSystemAlpha:Number = 1;
-		
-		override public function get alpha():Number
+		/**
+		 * Setting the complete state and throwing the event.
+		 */
+		private function complete():void
 		{
-			return mSystemAlpha;
-		}
-		
-		override public function set alpha(value:Number):void
-		{
-			mSystemAlpha = value;
+			if (!mCompleted)
+			{
+				mCompleted = true;
+				dispatchEventWith(starling.events.Event.COMPLETE);
+			}
 		}
 		
 		/**
@@ -1024,7 +1037,6 @@ package de.flintfabrik.starling.display
 			sInstances.splice(sInstances.indexOf(this), 1);
 			removeEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 			stop(true);
-			complete();
 			mBatched = false;
 			super.filter = mFilter = null;
 			removeFromParent();
@@ -1283,7 +1295,7 @@ package de.flintfabrik.starling.display
 			minRadius = Number(systemOptions.minRadius);
 			mMinRadiusVariance = Number(systemOptions.minRadiusVariance);
 			mRotatePerSecond = Number(systemOptions.rotatePerSecond) * DEG2RAD;
-			mRotatePerSecondVariance = Number(systemOptions.rotatePerSecondVariance) *DEG2RAD;
+			mRotatePerSecondVariance = Number(systemOptions.rotatePerSecondVariance) * DEG2RAD;
 			
 			mStartColor = systemOptions.startColor;
 			mStartColorVariance = systemOptions.startColorVariance;
@@ -1696,20 +1708,10 @@ package de.flintfabrik.starling.display
 			if (automaticJugglerManagement)
 				Starling.juggler.remove(this);
 			
-			if (clear){
-				returnParticlesToPool();
-				complete();
-			}
-		}
-		
-		/**
-		 * Setting the complete state and throwing the event.
-		 */
-		private function complete():void {
-			if (!mCompleted)
+			if (clear)
 			{
-				mCompleted = true;
-				dispatchEventWith(starling.events.Event.COMPLETE);
+				returnParticlesToPool();
+				dispatchEventWith(starling.events.Event.CANCEL);
 			}
 		}
 		
@@ -1717,17 +1719,21 @@ package de.flintfabrik.starling.display
 		 * Resets complete state and enables the system to play again if it has not been disposed.
 		 * @return
 		 */
-		public function reset():Boolean {
-			if (!mDisposed) {
+		public function reset():Boolean
+		{
+			if (!mDisposed)
+			{
 				mEmissionRate = mMaxNumParticles / mLifespan;
 				mFrameTime = 0.0;
 				mPlaying = false;
-				while(mNumParticles){
+				while (mNumParticles)
+				{
 					mParticles[--mNumParticles].active = false;
 				}
 				mMaxCapacity = mMaxNumParticles ? Math.min(MAX_CAPACITY, mMaxNumParticles) : MAX_CAPACITY;
 				mCompleted = false;
-				if (!mParticles) getParticlesFromPool();
+				if (!mParticles)
+					getParticlesFromPool();
 				return mParticles != null;
 			}
 			return false;
@@ -1768,6 +1774,17 @@ package de.flintfabrik.starling.display
 		private function updateEmissionRate():void
 		{
 			emissionRate = mMaxNumParticles / mLifespan;
+		}
+		
+		/** @inheritDoc */
+		override public function get alpha():Number
+		{
+			return mSystemAlpha;
+		}
+		
+		override public function set alpha(value:Number):void
+		{
+			mSystemAlpha = value;
 		}
 		
 		/**
@@ -1833,7 +1850,8 @@ package de.flintfabrik.starling.display
 		 * stopped with the parameter clear.
 		 */
 		
-		public function get completed():Boolean {
+		public function get completed():Boolean
+		{
 			return mCompleted;
 		}
 		
@@ -2428,8 +2446,6 @@ package de.flintfabrik.starling.display
 			if (TextureSmoothing.isValid(value))
 				mSmoothing = value;
 		}
-		
-		public var forceSortFlag:Boolean = false;
 		
 		/**
 		 * A custom function that can be set to sort the Vector of particles.

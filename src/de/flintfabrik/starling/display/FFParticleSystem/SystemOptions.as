@@ -13,7 +13,6 @@ package de.flintfabrik.starling.display.FFParticleSystem
 	import de.flintfabrik.starling.display.FFParticleSystem.Frame;
 	import de.flintfabrik.starling.utils.ColorArgb;
 	import flash.display3D.Context3DBlendFactor;
-	import flash.display3D.textures.RectangleTexture;
 	import flash.geom.Rectangle;
 	import starling.textures.*;
 	
@@ -311,7 +310,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		public function exportConfig(atlasXML:XML = null):XML
 		{
 			var tempAtlas:XML = atlasXML ? atlasXML : this.atlasXML;
-			var target:XML =   <particleEmitterConfig/>;
+			var target:XML = XML('<particleEmitterConfig/>');
 			
 			target.angle.@value = isNaN(angle) ? 0 : angle.toFixed(2);
 			target.angleVariance.@value = isNaN(angleVariance) ? 0 : angleVariance.toFixed(2);
@@ -437,7 +436,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.rotationStartVariance = getFloatValue(config.rotationStartVariance);
 			target.rotationEnd = getFloatValue(config.rotationEnd);
 			target.rotationEndVariance = getFloatValue(config.rotationEndVariance);
-			target.emitAngleAlignedRotation = getIntValue(config.emitAngleAlignedRotation);
+			target.emitAngleAlignedRotation = getBooleanValue(config.emitAngleAlignedRotation);
 			target.speed = getFloatValue(config.speed);
 			target.speedVariance = getFloatValue(config.speedVariance);
 			target.radialAcceleration = getFloatValue(config.radialAcceleration);
@@ -542,10 +541,14 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		
 		private static function getBooleanValue(element:XMLList):Boolean
 		{
-			var valueStr:String = element.attribute("value").toLowerCase();
-			var valueInt:int = parseInt(element.attribute("value"));
-			var result:Boolean = valueStr == "true" || valueInt > 0;
-			return result;
+			if (element[0])
+			{
+				var valueStr:String = (element.attribute("value")).toLowerCase();
+				var valueInt:int = parseInt(element.attribute("value"));
+				var result:Boolean = valueStr == "true" || valueInt > 0;
+				return result;
+			}
+			return false;
 		}
 		
 		private static function getIntValue(element:XMLList):int
@@ -637,7 +640,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				if (texture && texture is SubTexture)
 				{
 					// look for subtexture with same properties as the subtexture, on success we'll use it as firstFrame
-					var st:SubTexture = (texture as SubTexture);
+					var st:SubTexture = SubTexture(texture);
 					var rect:Rectangle = st.clipping;
 					
 					rect.x *= st.root.nativeWidth;
@@ -686,7 +689,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				if (texture is SubTexture)
 				{
 					//subtexture
-					st = texture as SubTexture;
+					st = SubTexture(texture);
 					
 					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, st.clipping.x * st.parent.width, st.clipping.y * st.parent.height, st.clipping.width * st.parent.width, st.clipping.height * st.parent.height);
 				}

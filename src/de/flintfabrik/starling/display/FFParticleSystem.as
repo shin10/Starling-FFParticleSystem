@@ -30,6 +30,7 @@ package de.flintfabrik.starling.display
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import starling.animation.IAnimatable;
+	import starling.animation.Juggler;
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -104,11 +105,24 @@ package de.flintfabrik.starling.display
 		public var forceSortFlag:Boolean = false;
 		
 		/**
-		 * Set this Boolean to automatically add/remove the system to/from Starling's Juggler, on calls of start()/stop().
+		 * Set this Boolean to automatically add/remove the system to/from juggler, on calls of start()/stop().
 		 * @see #start()
 		 * @see #stop()
+		 * @see #defaultJuggler
+		 * @see #juggler()
 		 */
 		public static var automaticJugglerManagement:Boolean = true;
+		
+		/**
+		 * Default juggler to use when <a href="#automaticJugglerManagement">automaticJugglerManagement</a> 
+		 * is active (by default this value is the Starling's juggler).
+		 * Setting this value will affect only new particle system instances.
+		 * Juggler to use can be also manually set by particle system instance.
+		 * @see #automaticJugglerManagement
+		 * @see #juggler()
+		 */
+		public static var defaultJuggler:Juggler = Starling.juggler;
+		private var mJuggler:Juggler = FFParticleSystem.defaultJuggler;
 		
 		private var mBatched:Boolean = false;
 		private var mBatching:Boolean = true;
@@ -1407,7 +1421,7 @@ package de.flintfabrik.starling.display
 		public function pause():void
 		{
 			if (automaticJugglerManagement)
-				Starling.juggler.remove(this);
+				mJuggler.remove(this);
 			mPlaying = false;
 		}
 		
@@ -1669,7 +1683,7 @@ package de.flintfabrik.starling.display
 		public function resume():void
 		{
 			if (automaticJugglerManagement)
-				Starling.juggler.add(this);
+				mJuggler.add(this);
 			mPlaying = true;
 		}
 		
@@ -1692,7 +1706,7 @@ package de.flintfabrik.starling.display
 				mPlaying = true;
 				mEmissionTime = duration;
 				if (automaticJugglerManagement)
-					Starling.juggler.add(this);
+					mJuggler.add(this);
 			}
 		}
 		
@@ -1706,7 +1720,7 @@ package de.flintfabrik.starling.display
 			mPlaying = false;
 			
 			if (automaticJugglerManagement)
-				Starling.juggler.remove(this);
+				mJuggler.remove(this);
 			
 			if (clear)
 			{
@@ -2661,6 +2675,31 @@ package de.flintfabrik.starling.display
 		public function set tinted(value:Boolean):void
 		{
 			mTinted = value;
+		}
+		
+		/**
+		 * Juggler to use when <a href="#automaticJugglerManagement">automaticJugglerManagement</a> 
+		 * is active.
+		 * @see #automaticJugglerManagement
+		 */
+		public function get juggler():Juggler 
+		{
+			return mJuggler;
+		}
+		
+		public function set juggler(value:Juggler):void 
+		{
+			// Not null and different required
+			if (value == null || value == mJuggler)
+				return;
+			
+			// Remove from current and add to new if needed
+			if (mJuggler.contains(this)) {
+				mJuggler.remove(this);
+				value.add(this);
+			}
+			
+			mJuggler = value;
 		}
 	
 	}

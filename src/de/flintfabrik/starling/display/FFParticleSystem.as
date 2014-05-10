@@ -1416,7 +1416,7 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
-		 * Removes the system from the juggler.
+		 * Removes the system from the juggler and stops animation.
 		 */
 		public function pause():void
 		{
@@ -1678,7 +1678,7 @@ package de.flintfabrik.starling.display
 		///////////////////////////////// QUAD BATCH MODIFICATIONS END /////////////////////////////////
 		
 		/**
-		 * Adds the system to the juggler.
+		 * Adds the system to the juggler and resumes the animation.
 		 */
 		public function resume():void
 		{
@@ -1688,11 +1688,13 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
-		 * Starts the particle system and adds it to Starling's Juggler if automaticJugglerManagement is enabled
+		 * Starts the system to emit particles and adds it to the defaultJuggler if automaticJugglerManagement is enabled.
 		 * @param	duration Emitting time in seconds.
 		 */
 		public function start(duration:Number = 0):void
 		{
+			if (mCompleted) reset();
+			
 			if (mEmissionRate != 0 && !mCompleted)
 			{
 				if (duration == 0)
@@ -1705,25 +1707,26 @@ package de.flintfabrik.starling.display
 				}
 				mPlaying = true;
 				mEmissionTime = duration;
+				mFrameTime = 0;
 				if (automaticJugglerManagement)
 					mJuggler.add(this);
 			}
 		}
 		
 		/**
-		 * Stops the particle system and adds it to Starling's Juggler if automaticJugglerManagement is enabled.
-		 * @param	clear Unlinks the particles returns them back to the pool.
+		 * Stopping the emitter creating particles.
+		 * @param	clear Unlinks the particles returns them back to the pool and stops the animation.
 		 */
 		public function stop(clear:Boolean = false):void
 		{
 			mEmissionTime = 0.0;
-			mPlaying = false;
-			
-			if (automaticJugglerManagement)
-				mJuggler.remove(this);
 			
 			if (clear)
 			{
+				if (automaticJugglerManagement)
+					mJuggler.remove(this);
+				
+				mPlaying = false;
 				returnParticlesToPool();
 				dispatchEventWith(starling.events.Event.CANCEL);
 			}
@@ -2031,6 +2034,16 @@ package de.flintfabrik.starling.display
 		public function set emitterYVariance(value:Number):void
 		{
 			mEmitterYVariance = value;
+		}
+		
+		/**
+		 * Returns true if the system is currently emitting particles.
+		 * @see playing
+		 * @see start()
+		 * @see stop()
+		 */
+		public function get emitting():Boolean {
+			return Boolean(mEmissionTime);
 		}
 		
 		/**
@@ -2359,6 +2372,7 @@ package de.flintfabrik.starling.display
 		 * Whether the system is playing or paused.
 		 *
 		 * <p><strong>Note:</strong> If you're not using automaticJugglermanagement the returned value may be wrong.</p>
+		 * @see emitting
 		 */
 		public function get playing():Boolean
 		{

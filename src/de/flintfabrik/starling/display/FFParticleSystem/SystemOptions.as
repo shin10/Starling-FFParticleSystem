@@ -500,11 +500,11 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				
 				node = config.animation.randomStartFrames;
 				if (node.length())
-					target.randomStartFrames = getIntValue(node);
+					target.randomStartFrames = getIntValue(node) as Boolean;
 			}
 			node = config.tinted;
 			if (node.length())
-				target.tinted = getIntValue(node);
+				target.tinted = getIntValue(node) as Boolean;
 			node = config.spawnTime;
 			if (node.length())
 				target.spawnTime = getFloatValue(node);

@@ -58,6 +58,11 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		public var tinted:Boolean = true;
 		
 		/**
+		 * A Boolean overriding the premultiplied alpha value of the texture.
+		 */
+		public var premultipliedAlpha:Boolean;
+		
+		/**
 		 * A Number between 0 and 1 setting the timespan to fade in particles.
 		 */
 		public var spawnTime:Number = 0;
@@ -195,6 +200,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			
 			this.texture = texture;
 			this.atlasXML = atlasXML;
+			this.premultipliedAlpha = this.texture.premultipliedAlpha;
 			
 			if (config)
 				SystemOptions.fromXML(config, texture, atlasXML, this);
@@ -358,6 +364,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.tangentialAcceleration.@value = isNaN(tangentialAcceleration) ? 0 : tangentialAcceleration.toFixed(2);
 			target.tangentialAccelVariance.@value = isNaN(tangentialAccelerationVariance) ? 0 : tangentialAccelerationVariance.toFixed(2);
 			target.tinted.@value = int(tinted);
+			target.premultipliedAlpha.@value = Boolean(premultipliedAlpha);
 			
 			target.startColor.@red = isNaN(startColor.red) ? 1 : startColor.red;
 			target.startColor.@green = isNaN(startColor.green) ? 1 : startColor.green;
@@ -505,6 +512,9 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			node = config.tinted;
 			if (node.length())
 				target.tinted = getBooleanValue(node);
+			node = config.premultipliedAlpha;
+			if (node.length())
+				target.premultipliedAlpha = getBooleanValue(node);
 			node = config.spawnTime;
 			if (node.length())
 				target.spawnTime = getFloatValue(node);
@@ -630,7 +640,6 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			
 			if (atlasXML)
 			{
-				var scale:Number = texture.scale;
 				var w:int = texture.root.nativeWidth;
 				var h:int = texture.root.nativeHeight;
 				
@@ -671,10 +680,10 @@ package de.flintfabrik.starling.display.FFParticleSystem
 					for (var i:int = 0; i < animationLoopLength; ++i)
 					{
 						var subTexture:XML = atlasXML.SubTexture[i + firstFrame];
-						var x:Number = parseFloat(subTexture.attribute("x")) / scale;
-						var y:Number = parseFloat(subTexture.attribute("y")) / scale;
-						var width:Number = parseFloat(subTexture.attribute("width")) / scale;
-						var height:Number = parseFloat(subTexture.attribute("height")) / scale;
+						var x:Number = parseFloat(subTexture.attribute("x"));
+						var y:Number = parseFloat(subTexture.attribute("y"));
+						var width:Number = parseFloat(subTexture.attribute("width"));
+						var height:Number = parseFloat(subTexture.attribute("height"));
 						mFrameLUT[i + l * animationLoopLength] = new Frame(w, h, x, y, width, height);
 					}
 				}
@@ -690,8 +699,9 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				{
 					//subtexture
 					st = SubTexture(texture);
-					
-					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, st.clipping.x * st.parent.width, st.clipping.y * st.parent.height, st.clipping.width * st.parent.width, st.clipping.height * st.parent.height);
+					var wf:Number = st.parent.width * st.scale;
+					var hf:Number = st.parent.height * st.scale;
+					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, st.clipping.x * wf, st.clipping.y * hf, st.clipping.width * wf, st.clipping.height * hf);
 				}
 				else
 				{

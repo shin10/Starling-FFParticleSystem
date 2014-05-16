@@ -114,7 +114,7 @@ package de.flintfabrik.starling.display
 		public static var automaticJugglerManagement:Boolean = true;
 		
 		/**
-		 * Default juggler to use when <a href="#automaticJugglerManagement">automaticJugglerManagement</a> 
+		 * Default juggler to use when <a href="#automaticJugglerManagement">automaticJugglerManagement</a>
 		 * is active (by default this value is the Starling's juggler).
 		 * Setting this value will affect only new particle system instances.
 		 * Juggler to use can be also manually set by particle system instance.
@@ -137,7 +137,6 @@ package de.flintfabrik.starling.display
 		private var mNumBatchedParticles:int = 0;
 		private var mNumParticles:int = 0;
 		private var mPlaying:Boolean = false;
-		private var mPremultipliedAlpha:Boolean;
 		private var mRandomStartFrames:Boolean = false;
 		private var mSmoothing:String = TextureSmoothing.BILINEAR;
 		private var mSortFunction:Function = undefined;
@@ -145,6 +144,7 @@ package de.flintfabrik.starling.display
 		private var mSystemAlpha:Number = 1;
 		private var mTexture:Texture;
 		private var mTinted:Boolean = false;
+		private var mPremultipliedAlpha:Boolean = false;
 		private var mExactBounds:Boolean = false;
 		
 		// particles / data / buffers
@@ -812,7 +812,6 @@ package de.flintfabrik.starling.display
 				}
 			}
 			
-			mPremultipliedAlpha = texture.premultipliedAlpha;
 			mEmissionRate = mMaxNumParticles / mLifespan;
 			mEmissionTime = 0.0;
 			mFrameTime = 0.0;
@@ -1322,7 +1321,7 @@ package de.flintfabrik.starling.display
 			
 			exactBounds = Boolean(systemOptions.excactBounds);
 			mTexture = systemOptions.texture;
-			mPremultipliedAlpha = mTexture.premultipliedAlpha;
+			mPremultipliedAlpha = systemOptions.premultipliedAlpha;
 			
 			mCustomFunc = systemOptions.customFunction;
 			mSortFunction = systemOptions.sortFunction;
@@ -1352,6 +1351,7 @@ package de.flintfabrik.starling.display
 			target.lastFrame = mLastFrame;
 			target.randomStartFrames = mRandomStartFrames;
 			target.tinted = mTinted;
+			target.premultipliedAlpha = mPremultipliedAlpha;
 			target.spawnTime = mSpawnTime;
 			target.fadeInTime = mFadeInTime;
 			target.fadeOutTime = mFadeOutTime;
@@ -1535,12 +1535,12 @@ package de.flintfabrik.starling.display
 		 *  DisplayObjects. Sharing a filter instance between instances of the FFParticleSystem is
 		 *  AFAIK the only existing exception to this rule IF the systems will get batched.</p>
 		 */
-		public function isStateChange(tinted:Boolean, parentAlpha:Number, texture:Texture, smoothing:String, blendMode:String, blendFactorSource:String, blendFactorDestination:String, filter:FragmentFilter):Boolean
+		public function isStateChange(tinted:Boolean, parentAlpha:Number, texture:Texture, pma:Boolean, smoothing:String, blendMode:String, blendFactorSource:String, blendFactorDestination:String, filter:FragmentFilter):Boolean
 		{
 			if (mNumParticles == 0)
 				return false;
 			else if (mTexture != null && texture != null)
-				return mTexture.base != texture.base || mTexture.repeat != texture.repeat || mSmoothing != smoothing || mTinted != (tinted || parentAlpha != 1.0) || this.blendMode != blendMode || this.mBlendFactorSource != blendFactorSource || this.mBlendFactorDestination != blendFactorDestination || this.mFilter != filter;
+				return mTexture.base != texture.base || mTexture.repeat != texture.repeat || mPremultipliedAlpha != pma || mSmoothing != smoothing || mTinted != (tinted || parentAlpha != 1.0) || this.blendMode != blendMode || this.mBlendFactorSource != blendFactorSource || this.mBlendFactorDestination != blendFactorDestination || this.mFilter != filter;
 			else
 				return true;
 		}
@@ -1570,7 +1570,7 @@ package de.flintfabrik.starling.display
 							{
 								var nextps:FFParticleSystem = FFParticleSystem(next);
 								
-								if (nextps.mParticles && !nextps.isStateChange(mTinted, alpha, mTexture, mSmoothing, blendMode, mBlendFactorSource, mBlendFactorDestination, mFilter))
+								if (nextps.mParticles && !nextps.isStateChange(mTinted, alpha, mTexture, mPremultipliedAlpha, mSmoothing, blendMode, mBlendFactorSource, mBlendFactorDestination, mFilter))
 								{
 									
 									var newcapacity:int = numParticles + mNumBatchedParticles + nextps.numParticles;
@@ -1639,9 +1639,7 @@ package de.flintfabrik.starling.display
 			
 			var context:Context3D = Starling.context;
 			
-			var pma:Boolean = false;
-			//mVertexData.premultipliedAlpha;
-			sRenderAlpha[0] = sRenderAlpha[1] = sRenderAlpha[2] = pma ? alpha : 1.0;
+			sRenderAlpha[0] = sRenderAlpha[1] = sRenderAlpha[2] = mPremultipliedAlpha ? alpha : 1.0;
 			sRenderAlpha[3] = alpha;
 			
 			if (context == null)
@@ -1693,7 +1691,8 @@ package de.flintfabrik.starling.display
 		 */
 		public function start(duration:Number = 0):void
 		{
-			if (mCompleted) reset();
+			if (mCompleted)
+				reset();
 			
 			if (mEmissionRate != 0 && !mCompleted)
 			{
@@ -2042,7 +2041,8 @@ package de.flintfabrik.starling.display
 		 * @see start()
 		 * @see stop()
 		 */
-		public function get emitting():Boolean {
+		public function get emitting():Boolean
+		{
 			return Boolean(mEmissionTime);
 		}
 		
@@ -2388,6 +2388,19 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
+		 * Overrides the standard premultiplied alpha value set by the texture.
+		 */
+		public function get premultipliedAlpha():Boolean
+		{
+			return mPremultipliedAlpha;
+		}
+		
+		public function set premultipliedAlpha(value:Boolean):void
+		{
+			mPremultipliedAlpha = value;
+		}
+		
+		/**
 		 * Radial acceleration of particles.
 		 * @see #radialAccelerationVariance
 		 * @see #EMITTER_TYPE_GRAVITY
@@ -2692,23 +2705,24 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
-		 * Juggler to use when <a href="#automaticJugglerManagement">automaticJugglerManagement</a> 
+		 * Juggler to use when <a href="#automaticJugglerManagement">automaticJugglerManagement</a>
 		 * is active.
 		 * @see #automaticJugglerManagement
 		 */
-		public function get juggler():Juggler 
+		public function get juggler():Juggler
 		{
 			return mJuggler;
 		}
 		
-		public function set juggler(value:Juggler):void 
+		public function set juggler(value:Juggler):void
 		{
 			// Not null and different required
 			if (value == null || value == mJuggler)
 				return;
 			
 			// Remove from current and add to new if needed
-			if (mJuggler.contains(this)) {
+			if (mJuggler.contains(this))
+			{
 				mJuggler.remove(this);
 				value.add(this);
 			}

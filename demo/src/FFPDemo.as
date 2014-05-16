@@ -231,6 +231,7 @@ package
 					addChild(s);
 					if (!systems[i].paused)
 					{
+						s.premultipliedAlpha = false;
 						s.start();
 					}
 					if (advanceTime)
@@ -567,7 +568,7 @@ package
 				var obj:DisplayObject = getChildAt(i);
 				if (obj is FFParticleSystem)
 				{
-					if (Starling.juggler.contains(FFParticleSystem(obj)))
+					if (FFParticleSystem.defaultJuggler.contains(FFParticleSystem(obj)))
 						return true;
 				}
 			}

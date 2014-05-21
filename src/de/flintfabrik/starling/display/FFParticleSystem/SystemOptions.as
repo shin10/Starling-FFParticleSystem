@@ -576,10 +576,10 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		private static function getColor(element:XMLList):ColorArgb
 		{
 			var color:ColorArgb = new ColorArgb();
-			color.red = parseFloat(element.attribute("red"));
-			color.green = parseFloat(element.attribute("green"));
-			color.blue = parseFloat(element.attribute("blue"));
-			color.alpha = parseFloat(element.attribute("alpha"));
+			color.red = parseFloat(element.attribute("red")) | 0;
+			color.green = parseFloat(element.attribute("green")) | 0;
+			color.blue = parseFloat(element.attribute("blue")) | 0;
+			color.alpha = parseFloat(element.attribute("alpha")) | 0;
 			return color;
 		}
 		

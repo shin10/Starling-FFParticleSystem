@@ -8,6 +8,7 @@
 		<randomStartFrames value="1"/>
 	</animation>
 	<tinted value="1"/>
+	<premultipliedAlpha value="0"/>
 	<spawnTime value="0.1" />
 	<fadeTime value="0" />
 	

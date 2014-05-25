@@ -14,6 +14,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 	import de.flintfabrik.starling.utils.ColorArgb;
 	import flash.display3D.Context3DBlendFactor;
 	import flash.geom.Rectangle;
+	import starling.filters.FragmentFilter;
 	import starling.textures.*;
 	
 	/**
@@ -58,9 +59,9 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		public var tinted:Boolean = true;
 		
 		/**
-		 * A Boolean overriding the premultiplied alpha value of the texture.
+		 * A Boolean overriding the premultiplied alpha value of the system.
 		 */
-		public var premultipliedAlpha:Boolean;
+		public var premultipliedAlpha:Boolean = true;
 		
 		/**
 		 * A Number between 0 and 1 setting the timespan to fade in particles.
@@ -140,11 +141,12 @@ package de.flintfabrik.starling.display.FFParticleSystem
 		public var rotatePerSecond:Number = 0;
 		public var rotatePerSecondVariance:Number = 0;
 		
-		public var startColor:ColorArgb;
-		public var startColorVariance:ColorArgb;
-		public var finishColor:ColorArgb;
-		public var finishColorVariance:ColorArgb;
+		public var startColor:ColorArgb = new ColorArgb(1, 1, 1, 1);
+		public var startColorVariance:ColorArgb = new ColorArgb(0, 0, 0, 0);
+		public var finishColor:ColorArgb = new ColorArgb(1, 1, 1, 1);
+		public var finishColorVariance:ColorArgb = new ColorArgb(0, 0, 0, 0);
 		
+		public var filter:FragmentFilter;
 		public var customFunction:Function;
 		public var sortFunction:Function;
 		public var forceSortFlag:Boolean = false;
@@ -200,7 +202,6 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			
 			this.texture = texture;
 			this.atlasXML = atlasXML;
-			this.premultipliedAlpha = this.texture.premultipliedAlpha;
 			
 			if (config)
 				SystemOptions.fromXML(config, texture, atlasXML, this);
@@ -299,6 +300,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.fadeOutTime = this.fadeOutTime;
 			target.excactBounds = this.excactBounds;
 			
+			target.filter = this.filter;
 			target.customFunction = this.customFunction;
 			target.sortFunction = this.sortFunction;
 			target.forceSortFlag = this.forceSortFlag;
@@ -456,10 +458,10 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			target.minRadiusVariance = getFloatValue(config.minRadiusVariance);
 			target.rotatePerSecond = getFloatValue(config.rotatePerSecond);
 			target.rotatePerSecondVariance = getFloatValue(config.rotatePerSecondVariance);
-			target.startColor = getColor(config.startColor);
-			target.startColorVariance = getColor(config.startColorVariance);
-			target.finishColor = getColor(config.finishColor);
-			target.finishColorVariance = getColor(config.finishColorVariance);
+			getColor(config.startColor, target.startColor);
+			getColor(config.startColorVariance, target.startColorVariance);
+			getColor(config.finishColor, target.finishColor);
+			getColor(config.finishColorVariance, target.finishColorVariance);
 			target.blendFuncSource = getBlendFunc(config.blendFuncSource);
 			target.blendFuncDestination = getBlendFunc(config.blendFuncDestination);
 			target.duration = getFloatValue(config.duration);
@@ -573,13 +575,24 @@ package de.flintfabrik.starling.display.FFParticleSystem
 			return isNaN(result) ? 0 : result;
 		}
 		
-		private static function getColor(element:XMLList):ColorArgb
+		private static function getColor(element:XMLList, color:ColorArgb):ColorArgb
 		{
-			var color:ColorArgb = new ColorArgb();
-			color.red = parseFloat(element.attribute("red")) | 0;
-			color.green = parseFloat(element.attribute("green")) | 0;
-			color.blue = parseFloat(element.attribute("blue")) | 0;
-			color.alpha = parseFloat(element.attribute("alpha")) | 0;
+			if (!color)
+				color = new ColorArgb();
+			
+			var val:Number;
+			val = parseFloat(element.attribute("red"));
+			if (!isNaN(val))
+				color.red = val;
+			val = parseFloat(element.attribute("green"));
+			if (!isNaN(val))
+				color.green = val;
+			val = parseFloat(element.attribute("blue"));
+			if (!isNaN(val))
+				color.blue = val;
+			val = parseFloat(element.attribute("alpha"));
+			if (!isNaN(val))
+				color.alpha = val;
 			return color;
 		}
 		

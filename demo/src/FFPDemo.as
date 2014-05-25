@@ -112,7 +112,7 @@ package
 		private var soLaserChaos:SystemOptions = SystemOptions.fromXML(laserChaosConfig, atlasTexture, atlasXML);
 		private var soBurningCarSparks:SystemOptions = SystemOptions.fromXML(sparksConfig, atlasTexture, atlasXML);
 		private var soAshFar:SystemOptions = SystemOptions.fromXML(ashConfig, atlasTexture, atlasXML);
-		private var soAshClose:SystemOptions = (soAshFar.clone()).appendFromObject({maxParticles: 100, lifespan: 3, lifespanVariance: 0.1, firstFrameName: "smokeA_0", lastFrameName: "smokeB_15", startParticleSize: 3.00, startParticleSizeVariance: 1, finishParticleSize: 3, finishParticleSizeVariance: 1});
+		private var soAshClose:SystemOptions = (soAshFar.clone()).appendFromObject({maxParticles: 100, gravityY: 75, lifespan: 3, lifespanVariance: 0.1, startParticleSize: 2, startParticleSizeVariance: 1, finishParticleSize: 2, finishParticleSizeVariance: 1});
 		private var soUFOBurningFX:SystemOptions = SystemOptions.fromXML(burningConfig, atlasTexture, atlasXML).appendFromObject({sourceX: -100, sourceY: -100});
 		private var soUFOs:SystemOptions = SystemOptions.fromXML(ufoConfig, texUFO).appendFromObject({customFunction: customFunctionUFO});
 		private var soDust:SystemOptions = SystemOptions.fromXML(dustConfig, atlasTexture, atlasXML);
@@ -231,7 +231,6 @@ package
 					addChild(s);
 					if (!systems[i].paused)
 					{
-						s.premultipliedAlpha = false;
 						s.start();
 					}
 					if (advanceTime)
@@ -568,7 +567,7 @@ package
 				var obj:DisplayObject = getChildAt(i);
 				if (obj is FFParticleSystem)
 				{
-					if (FFParticleSystem.defaultJuggler.contains(FFParticleSystem(obj)))
+					if (FFParticleSystem(obj).playing)
 						return true;
 				}
 			}

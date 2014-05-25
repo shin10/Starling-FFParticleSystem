@@ -9,7 +9,7 @@
 	</animation>
 	<tinted value="1"/>
 	<spawnTime value="0.1" />
-	<fadeOutTime value="0" />
+	<fadeOutTime value="0.1" />
 	
 	<emitterType value="0"/>
 	<maxParticles value="1000"/>
@@ -47,9 +47,9 @@
 	<rotatePerSecondVariance value="0.00"/>
 	
 	<startColor red=".25" green=".25" blue=".25" alpha="1"/>
-	<startColorVariance red="0.1" green="0.1" blue="0.1" alpha="0"/>
+	<startColorVariance red="0.05" green="0.05" blue="0.05" alpha="0"/>
 	<finishColor red=".25" green=".25" blue=".25" alpha="1"/>
-	<finishColorVariance red="0.1" green="0.1" blue="0.1" alpha="0"/>
+	<finishColorVariance red="0.05" green="0.05" blue="0.05" alpha="0"/>
 	
 	<blendFuncSource value="770"/>
 	<blendFuncDestination value="771"/>

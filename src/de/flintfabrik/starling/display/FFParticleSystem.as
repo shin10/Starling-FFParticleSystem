@@ -199,10 +199,10 @@ package de.flintfabrik.starling.display
 		private var mRotatePerSecondVariance:Number; // rotatePerSecondVariance
 		
 		// color configuration
-		private var mStartColor:ColorArgb; // startColor
-		private var mStartColorVariance:ColorArgb; // startColorVariance
-		private var mEndColor:ColorArgb; // finishColor
-		private var mEndColorVariance:ColorArgb; // finishColorVariance
+		private var mStartColor:ColorArgb = new ColorArgb(1, 1, 1, 1); // startColor
+		private var mStartColorVariance:ColorArgb = new ColorArgb(0, 0, 0, 0); // startColorVariance
+		private var mEndColor:ColorArgb = new ColorArgb(1, 1, 1, 1); // finishColor
+		private var mEndColorVariance:ColorArgb = new ColorArgb(0, 0, 0, 0); // finishColorVariance
 		
 		// texture animation
 		private var mAnimationLoops:Number = 1.0;
@@ -215,8 +215,8 @@ package de.flintfabrik.starling.display
 		private var mNumberOfFrames:int = 1;
 		private var mTextureAnimation:Boolean = false;
 		
-		private var mBlendFactorSource:String;
-		private var mBlendFactorDestination:String;
+		private var mBlendFuncSource:String;
+		private var mBlendFuncDestination:String;
 		private var mEmissionRate:Number; // emitted particles per second
 		private var mEmissionTime:Number = -1;
 		private var mEmissionTimePredefined:Number = -1;
@@ -816,7 +816,7 @@ package de.flintfabrik.starling.display
 			mEmissionTime = 0.0;
 			mFrameTime = 0.0;
 			mMaxCapacity = mMaxNumParticles ? Math.min(MAX_CAPACITY, mMaxNumParticles) : MAX_CAPACITY;
-			if (!sVertexBuffers[0])
+			if (!sVertexBuffers || !sVertexBuffers[0])
 				init();
 			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 			addedToStageHandler(null)
@@ -971,7 +971,6 @@ package de.flintfabrik.starling.display
 			particle.frameDelta = mNumberOfFrames / lifespan;
 			
 			// colors
-			
 			var startColorRed:Number = mStartColor.red;
 			var startColorGreen:Number = mStartColor.green;
 			var startColorBlue:Number = mStartColor.blue;
@@ -1119,10 +1118,7 @@ package de.flintfabrik.starling.display
 			sParticlePool = null;
 		}
 		
-		/** @inheritDoc */ /**
-		 * <strong>NOTE: filters are applied by rendering the content to a texture first.
-		 * This results in content which is not "pma" and will need other blending functions!</strong>
-		 */
+		/** @inheritDoc */
 		public override function set filter(value:FragmentFilter):void
 		{
 			if (!mBatched)
@@ -1310,19 +1306,35 @@ package de.flintfabrik.starling.display
 			mRotatePerSecond = Number(systemOptions.rotatePerSecond) * DEG2RAD;
 			mRotatePerSecondVariance = Number(systemOptions.rotatePerSecondVariance) * DEG2RAD;
 			
-			mStartColor = systemOptions.startColor;
-			mStartColorVariance = systemOptions.startColorVariance;
-			mEndColor = systemOptions.finishColor;
-			mEndColorVariance = systemOptions.finishColorVariance;
+			mStartColor.red = Number(systemOptions.startColor.red);
+			mStartColor.green = Number(systemOptions.startColor.green);
+			mStartColor.blue = Number(systemOptions.startColor.blue);
+			mStartColor.alpha = Number(systemOptions.startColor.alpha);
 			
-			mBlendFactorSource = String(systemOptions.blendFuncSource);
-			mBlendFactorDestination = String(systemOptions.blendFuncDestination);
+			mStartColorVariance.red = Number(systemOptions.startColorVariance.red);
+			mStartColorVariance.green = Number(systemOptions.startColorVariance.green);
+			mStartColorVariance.blue = Number(systemOptions.startColorVariance.blue);
+			mStartColorVariance.alpha = Number(systemOptions.startColorVariance.alpha);
+			
+			mEndColor.red = Number(systemOptions.finishColor.red);
+			mEndColor.green = Number(systemOptions.finishColor.green);
+			mEndColor.blue = Number(systemOptions.finishColor.blue);
+			mEndColor.alpha = Number(systemOptions.finishColor.alpha);
+			
+			mEndColorVariance.red = Number(systemOptions.finishColorVariance.red);
+			mEndColorVariance.green = Number(systemOptions.finishColorVariance.green);
+			mEndColorVariance.blue = Number(systemOptions.finishColorVariance.blue);
+			mEndColorVariance.alpha = Number(systemOptions.finishColorVariance.alpha);
+			
+			mBlendFuncSource = String(systemOptions.blendFuncSource);
+			mBlendFuncDestination = String(systemOptions.blendFuncDestination);
 			mEmitAngleAlignedRotation = Boolean(systemOptions.emitAngleAlignedRotation);
 			
 			exactBounds = Boolean(systemOptions.excactBounds);
 			mTexture = systemOptions.texture;
-			mPremultipliedAlpha = systemOptions.premultipliedAlpha;
+			mPremultipliedAlpha = Boolean(systemOptions.premultipliedAlpha);
 			
+			mFilter = systemOptions.filter;
 			mCustomFunc = systemOptions.customFunction;
 			mSortFunction = systemOptions.sortFunction;
 			forceSortFlag = systemOptions.forceSortFlag;
@@ -1396,13 +1408,14 @@ package de.flintfabrik.starling.display
 			target.finishColor = mEndColor;
 			target.finishColorVariance = mEndColorVariance;
 			
-			target.blendFuncSource = mBlendFactorSource;
-			target.blendFuncDestination = mBlendFactorDestination;
+			target.blendFuncSource = mBlendFuncSource;
+			target.blendFuncDestination = mBlendFuncDestination;
 			target.emitAngleAlignedRotation = mEmitAngleAlignedRotation;
 			
 			target.excactBounds = mExactBounds;
 			target.texture = mTexture;
 			
+			target.filter = mFilter;
 			target.customFunction = mCustomFunc;
 			target.sortFunction = mSortFunction;
 			target.forceSortFlag = forceSortFlag;
@@ -1540,7 +1553,7 @@ package de.flintfabrik.starling.display
 			if (mNumParticles == 0)
 				return false;
 			else if (mTexture != null && texture != null)
-				return mTexture.base != texture.base || mTexture.repeat != texture.repeat || mPremultipliedAlpha != pma || mSmoothing != smoothing || mTinted != (tinted || parentAlpha != 1.0) || this.blendMode != blendMode || this.mBlendFactorSource != blendFactorSource || this.mBlendFactorDestination != blendFactorDestination || this.mFilter != filter;
+				return mTexture.base != texture.base || mTexture.repeat != texture.repeat || mPremultipliedAlpha != pma || mSmoothing != smoothing || mTinted != (tinted || parentAlpha != 1.0) || this.blendMode != blendMode || this.mBlendFuncSource != blendFactorSource || this.mBlendFuncDestination != blendFactorDestination || this.mFilter != filter;
 			else
 				return true;
 		}
@@ -1570,7 +1583,7 @@ package de.flintfabrik.starling.display
 							{
 								var nextps:FFParticleSystem = FFParticleSystem(next);
 								
-								if (nextps.mParticles && !nextps.isStateChange(mTinted, alpha, mTexture, mPremultipliedAlpha, mSmoothing, blendMode, mBlendFactorSource, mBlendFactorDestination, mFilter))
+								if (nextps.mParticles && !nextps.isStateChange(mTinted, alpha, mTexture, mPremultipliedAlpha, mSmoothing, blendMode, mBlendFuncSource, mBlendFuncDestination, mFilter))
 								{
 									
 									var newcapacity:int = numParticles + mNumBatchedParticles + nextps.numParticles;
@@ -1645,7 +1658,7 @@ package de.flintfabrik.starling.display
 			if (context == null)
 				throw new MissingContextError();
 			
-			context.setBlendFactors(mBlendFactorSource, mBlendFactorDestination);
+			context.setBlendFactors(mBlendFuncSource, mBlendFuncDestination);
 			
 			MatrixUtil.convertTo3D(support.mvpMatrix, sRenderMatrix);
 			
@@ -1826,14 +1839,14 @@ package de.flintfabrik.starling.display
 		 * @see #blendFactorDestination
 		 * @see flash.display3D.Context3DBlendFactor
 		 */
-		public function get blendFactorSource():String
+		public function get blendFuncSource():String
 		{
-			return mBlendFactorSource;
+			return mBlendFuncSource;
 		}
 		
-		public function set blendFactorSource(value:String):void
+		public function set blendFuncSource(value:String):void
 		{
-			mBlendFactorSource = value;
+			mBlendFuncSource = value;
 		}
 		
 		/**
@@ -1841,14 +1854,14 @@ package de.flintfabrik.starling.display
 		 * @see #blendFactorSource
 		 * @see flash.display3D.Context3DBlendFactor;
 		 */
-		public function get blendFactorDestination():String
+		public function get blendFuncDestination():String
 		{
-			return mBlendFactorDestination;
+			return mBlendFuncDestination;
 		}
 		
-		public function set blendFactorDestination(value:String):void
+		public function set blendFuncDestination(value:String):void
 		{
-			mBlendFactorDestination = value;
+			mBlendFuncDestination = value;
 		}
 		
 		/**
@@ -2060,7 +2073,8 @@ package de.flintfabrik.starling.display
 		
 		public function set endColor(value:ColorArgb):void
 		{
-			mEndColor = value;
+			if(value)
+				mEndColor = value;
 		}
 		
 		/**
@@ -2077,7 +2091,8 @@ package de.flintfabrik.starling.display
 		
 		public function set endColorVariance(value:ColorArgb):void
 		{
-			mEndColorVariance = value;
+			if(value)
+				mEndColorVariance = value;
 		}
 		
 		/**
@@ -2388,7 +2403,7 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
-		 * Overrides the standard premultiplied alpha value set by the texture.
+		 * Overrides the standard premultiplied alpha value set by the system.
 		 */
 		public function get premultipliedAlpha():Boolean
 		{
@@ -2521,7 +2536,8 @@ package de.flintfabrik.starling.display
 		
 		public function set startColor(value:ColorArgb):void
 		{
-			mStartColor = value;
+			if(value)
+				mStartColor = value;
 		}
 		
 		/**
@@ -2538,7 +2554,8 @@ package de.flintfabrik.starling.display
 		
 		public function set startColorVariance(value:ColorArgb):void
 		{
-			mStartColorVariance = value;
+			if(value)
+				mStartColorVariance = value;
 		}
 		
 		/**

@@ -353,6 +353,9 @@ package de.flintfabrik.starling.display
 				sIndexBuffer.dispose();
 			
 			var context:Context3D = Starling.context;
+			if (context == null) throw new MissingContextError();
+			if (context.driverInfo == "Disposed") return;
+			
 			sVertexBuffers = new Vector.<VertexBuffer3D>();
 			sVertexBufferIdx = -1;
 			if (ApplicationDomain.currentDomain.hasDefinition("flash.display3D.Context3DBufferUsage"))
@@ -820,8 +823,7 @@ package de.flintfabrik.starling.display
 				init();
 			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 			addedToStageHandler(null)
-			// handle a lost device context
-			Starling.current.stage3D.addEventListener(flash.events.Event.CONTEXT3D_CREATE, onContextCreated, false, 0, true);
+			
 		}
 		
 		/**
@@ -892,6 +894,9 @@ package de.flintfabrik.starling.display
 				while (++i < sPoolSize)
 					sParticlePool[i] = new Particle();
 			}
+			
+			// handle a lost device context
+			Starling.current.stage3D.addEventListener(flash.events.Event.CONTEXT3D_CREATE, onContextCreated, false, 0, true);
 		}
 		
 		/**
@@ -1053,7 +1058,6 @@ package de.flintfabrik.starling.display
 			super.filter = mFilter = null;
 			removeFromParent();
 			
-			Starling.current.stage3D.removeEventListener(flash.events.Event.CONTEXT3D_CREATE, onContextCreated);
 			super.dispose();
 			mDisposed = true;
 		}
@@ -1072,6 +1076,8 @@ package de.flintfabrik.starling.display
 		 */
 		public static function dispose():void
 		{
+			Starling.current.stage3D.removeEventListener(flash.events.Event.CONTEXT3D_CREATE, onContextCreated);
+			
 			disposeBuffers();
 			disposePool();
 		}
@@ -1248,7 +1254,7 @@ package de.flintfabrik.starling.display
 		 * (Re)Inits the system (after context loss)
 		 * @param	event
 		 */
-		private function onContextCreated(event:flash.events.Event):void
+		private static function onContextCreated(event:flash.events.Event):void
 		{
 			createBuffers(sBufferSize);
 		}

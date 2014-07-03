@@ -230,6 +230,8 @@ package de.flintfabrik.starling.display
 		 */
 		public var emitter:Point = new Point();
 		
+		private var mEmitterObject:Object;
+		
 		/** Helper objects. */
 		
 		private static var sHelperMatrix:Matrix = new Matrix();
@@ -504,6 +506,7 @@ package de.flintfabrik.starling.display
 		public function advanceTime(passedTime:Number):void
 		{
 			var sortFlag:Boolean = forceSortFlag;
+			
 			mFrameTime += passedTime;
 			if (!mParticles)
 			{
@@ -524,8 +527,13 @@ package de.flintfabrik.starling.display
 			
 			var particleIndex:int = 0;
 			var particle:Particle;
-			mEmitterX = emitter.x;
-			mEmitterY = emitter.y;
+			if (mEmitterObject != null) {
+				mEmitterX = emitter.x = mEmitterObject.x;
+				mEmitterY = emitter.y = mEmitterObject.y;
+			}else{
+				mEmitterX = emitter.x;
+				mEmitterY = emitter.y;
+			}
 			
 			// advance existing particles
 			while (particleIndex < mNumParticles)
@@ -1991,9 +1999,27 @@ package de.flintfabrik.starling.display
 		}
 		
 		/**
+		 * An Object setting the emitter position automatically.
+		 *
+		 * @see #emitter
+		 * @see #emitterX
+		 * @see #emitterY
+		 */
+		public function get emitterObject():Object
+		{
+			return mEmitterObject;
+		}
+		
+		public function set emitterObject(obj:Object):void
+		{
+			mEmitterObject = obj;
+		}
+		
+		/**
 		 * Emitter x position.
 		 *
 		 * @see #emitter
+		 * @see #emitterObject
 		 * @see #emitterY
 		 */
 		public function get emitterX():Number
@@ -2010,6 +2036,7 @@ package de.flintfabrik.starling.display
 		 * Variance of the emitters x position.
 		 *
 		 * @see #emitter
+		 * @see #emitterObject
 		 * @see #emitterX
 		 */
 		public function get emitterXVariance():Number
@@ -2026,6 +2053,7 @@ package de.flintfabrik.starling.display
 		 * Emitter y position.
 		 *
 		 * @see #emitterX
+		 * @see #emitterObject
 		 * @see #emitter
 		 */
 		public function get emitterY():Number
@@ -2042,6 +2070,7 @@ package de.flintfabrik.starling.display
 		 * Variance of the emitters position.
 		 *
 		 * @see #emitter
+		 * @see #emitterObject
 		 * @see #emitterY
 		 */
 		public function get emitterYVariance():Number

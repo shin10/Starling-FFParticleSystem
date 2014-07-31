@@ -829,6 +829,10 @@ package de.flintfabrik.starling.display
 			mMaxCapacity = mMaxNumParticles ? Math.min(MAX_CAPACITY, mMaxNumParticles) : MAX_CAPACITY;
 			if (!sVertexBuffers || !sVertexBuffers[0])
 				init();
+				
+			if(defaultJuggler == null)
+				defaultJuggler = Starling.juggler;
+				
 			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 			addedToStageHandler(null)
 			
@@ -903,6 +907,9 @@ package de.flintfabrik.starling.display
 					sParticlePool[i] = new Particle();
 			}
 			
+			if(defaultJuggler == null)
+				defaultJuggler = Starling.juggler;
+			 
 			// handle a lost device context
 			Starling.current.stage3D.addEventListener(flash.events.Event.CONTEXT3D_CREATE, onContextCreated, false, 0, true);
 		}

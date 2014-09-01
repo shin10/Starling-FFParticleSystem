@@ -501,7 +501,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				
 				node = config.animation.numberOfAnimatedFrames;
 				if (node.length())
-					target.lastFrame = (node.length() ? int(target.firstFrame) + (target.animationLength = getIntValue(node)) : target.lastFrame).toString();
+					target.lastFrame = (node.length() ? int(target.firstFrame) + (target.animationLength = getIntValue(node)) : target.lastFrame);
 				
 				node = config.animation.loops;
 				if (node.length())

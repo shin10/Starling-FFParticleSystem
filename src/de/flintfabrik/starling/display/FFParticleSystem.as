@@ -572,19 +572,17 @@ package de.flintfabrik.starling.display
 			{
 				const timeBetweenParticles:Number = 1.0 / mEmissionRate;
 				
-				while (mFrameTime > 0)
+				
+				while (mFrameTime > 0 && mNumParticles < mMaxCapacity)
 				{
-					if (mNumParticles < mMaxCapacity)
-					{
-						if (mNumParticles == capacity)
-							raiseCapacity(capacity);
-						
-						particle = mParticles[mNumParticles];
-						initParticle(particle);
-						advanceParticle(particle, mFrameTime);
-						
-						++mNumParticles;
-					}
+					if (mNumParticles == capacity)
+						raiseCapacity(capacity);
+					
+					particle = mParticles[mNumParticles];
+					initParticle(particle);
+					advanceParticle(particle, mFrameTime);
+					
+					++mNumParticles;
 					
 					mFrameTime -= timeBetweenParticles;
 				}

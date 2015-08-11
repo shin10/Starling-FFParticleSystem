@@ -1610,7 +1610,7 @@ package de.flintfabrik.starling.display
 										break;
 									
 									mVertexData.rawData.fixed = false;
-									nextps.mVertexData.copyTo(this.mVertexData, (numParticles + mNumBatchedParticles) * 4, 0, nextps.numParticles * 4);
+									nextps.mVertexData.copyTransformedTo(this.mVertexData, (numParticles + mNumBatchedParticles) * 4, nextps.getTransformationMatrix(this, sHelperMatrix), 0, nextps.numParticles * 4);
 									mVertexData.rawData.fixed = true;
 									mNumBatchedParticles += nextps.numParticles;
 									

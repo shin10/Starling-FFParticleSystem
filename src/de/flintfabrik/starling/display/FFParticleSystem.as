@@ -637,6 +637,7 @@ package de.flintfabrik.starling.display
 			var sinX:Number;
 			var sinY:Number;
 			var position:uint;
+			const DEG90RAD:Number = Math.PI * 0.5;
 			
 			if (mSpawnTime || mFadeInTime || mFadeOutTime)
 			{
@@ -673,6 +674,11 @@ package de.flintfabrik.starling.display
 				particleAlpha = particle.colorAlpha * particle.fadeInFactor * particle.fadeOutFactor * mSystemAlpha;
 				
 				rotation = particle.rotation;
+				if (frameDimensions.rotated)
+				{
+					rotation -= DEG90RAD;
+				}
+				
 				x = particle.x;
 				y = particle.y;
 				
@@ -814,7 +820,7 @@ package de.flintfabrik.starling.display
 				if (mTexture is SubTexture)
 				{
 					var st:SubTexture = SubTexture(mTexture);
-					var frame:Frame = new Frame(1, 1, st.clipping.x, st.clipping.y, st.clipping.width, st.clipping.height);
+					var frame:Frame = new Frame(1, 1, st.clipping.x, st.clipping.y, st.clipping.width, st.clipping.height, st.rotated);
 					frame.particleHalfWidth = (mTexture.width) >> 1;
 					frame.particleHalfHeight = (mTexture.height) >> 1;
 					mFrameLUT = new <Frame>[frame];

@@ -355,8 +355,10 @@ package de.flintfabrik.starling.display
 				sIndexBuffer.dispose();
 			
 			var context:Context3D = Starling.context;
-			if (context == null) throw new MissingContextError();
-			if (context.driverInfo == "Disposed") return;
+			if (context == null)
+				throw new MissingContextError();
+			if (context.driverInfo == "Disposed")
+				return;
 			
 			sVertexBuffers = new Vector.<VertexBuffer3D>();
 			sVertexBufferIdx = -1;
@@ -527,10 +529,13 @@ package de.flintfabrik.starling.display
 			
 			var particleIndex:int = 0;
 			var particle:Particle;
-			if (mEmitterObject != null) {
+			if (mEmitterObject != null)
+			{
 				mEmitterX = emitter.x = mEmitterObject.x;
 				mEmitterY = emitter.y = mEmitterObject.y;
-			}else{
+			}
+			else
+			{
 				mEmitterX = emitter.x;
 				mEmitterY = emitter.y;
 			}
@@ -571,7 +576,6 @@ package de.flintfabrik.starling.display
 			if (mEmissionTime > 0)
 			{
 				const timeBetweenParticles:Number = 1.0 / mEmissionRate;
-				
 				
 				while (mFrameTime > 0 && mNumParticles < mMaxCapacity)
 				{
@@ -827,13 +831,13 @@ package de.flintfabrik.starling.display
 			mMaxCapacity = mMaxNumParticles ? Math.min(MAX_CAPACITY, mMaxNumParticles) : MAX_CAPACITY;
 			if (!sVertexBuffers || !sVertexBuffers[0])
 				init();
-				
-			if(defaultJuggler == null)
+			
+			if (defaultJuggler == null)
 				defaultJuggler = Starling.juggler;
-				
+			
 			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 			addedToStageHandler(null)
-			
+		
 		}
 		
 		/**
@@ -905,9 +909,9 @@ package de.flintfabrik.starling.display
 					sParticlePool[i] = new Particle();
 			}
 			
-			if(defaultJuggler == null)
+			if (defaultJuggler == null)
 				defaultJuggler = Starling.juggler;
-			 
+			
 			// handle a lost device context
 			Starling.current.stage3D.addEventListener(flash.events.Event.CONTEXT3D_CREATE, onContextCreated, false, 0, true);
 		}
@@ -1102,13 +1106,13 @@ package de.flintfabrik.starling.display
 		 */
 		public static function disposeBuffers():void
 		{
-			for each (var instance:FFParticleSystem in sInstances)
+			for (var i:int = sInstances.length - 1; i >= 0; --i)
 			{
-				instance.dispose();
+				sInstances[i].dispose();
 			}
 			if (sVertexBuffers)
 			{
-				for (var i:int = 0; i < sNumberOfVertexBuffers; ++i)
+				for (i = 0; i < sNumberOfVertexBuffers; ++i)
 				{
 					sVertexBuffers[i].dispose();
 					sVertexBuffers[i] = null;
@@ -1130,9 +1134,9 @@ package de.flintfabrik.starling.display
 		 */
 		public static function disposePool():void
 		{
-			for each (var instance:FFParticleSystem in sInstances)
+			for (var i:int = sInstances.length - 1; i >= 0; --i)
 			{
-				instance.dispose();
+				sInstances[i].dispose();
 			}
 			sParticlePool = null;
 		}
@@ -1497,21 +1501,21 @@ package de.flintfabrik.starling.display
 				if (!mTexture) // Quad-Shaders
 				{
 					vertexShader = "m44 op, va0, vc1 \n" + // 4x4 matrix transform to output clipspace
-						"mul v0, va1, vc0 \n"; // multiply alpha (vc0) with color (va1)
+					"mul v0, va1, vc0 \n"; // multiply alpha (vc0) with color (va1)
 					
 					fragmentShader = "mov oc, v0       \n"; // output color
 				}
 				else // Image-Shaders
 				{
 					vertexShader = tinted ? "m44 op, va0, vc1 \n" + // 4x4 matrix transform to output clipspace
-						"mul v0, va1, vc0 \n" + // multiply alpha (vc0) with color (va1)
-						"mov v1, va2      \n" // pass texture coordinates to fragment program
-						: "m44 op, va0, vc1 \n" + // 4x4 matrix transform to output clipspace
-						"mov v1, va2      \n"; // pass texture coordinates to fragment program
+					"mul v0, va1, vc0 \n" + // multiply alpha (vc0) with color (va1)
+					"mov v1, va2      \n" // pass texture coordinates to fragment program
+					: "m44 op, va0, vc1 \n" + // 4x4 matrix transform to output clipspace
+					"mov v1, va2      \n"; // pass texture coordinates to fragment program
 					
 					fragmentShader = tinted ? "tex ft1,  v1, fs0 <???> \n" + // sample texture 0
-						"mul  oc, ft1,  v0       \n" // multiply color with texel color
-						: "tex  oc,  v1, fs0 <???> \n"; // sample texture 0
+					"mul  oc, ft1,  v0       \n" // multiply color with texel color
+					: "tex  oc,  v1, fs0 <???> \n"; // sample texture 0
 					
 					fragmentShader = fragmentShader.replace("<???>", RenderSupport.getTextureLookupFlags(mTexture.format, mTexture.mipMapping, mTexture.repeat, smoothing));
 				}
@@ -2113,7 +2117,7 @@ package de.flintfabrik.starling.display
 		
 		public function set endColor(value:ColorArgb):void
 		{
-			if(value)
+			if (value)
 				mEndColor = value;
 		}
 		
@@ -2131,7 +2135,7 @@ package de.flintfabrik.starling.display
 		
 		public function set endColorVariance(value:ColorArgb):void
 		{
-			if(value)
+			if (value)
 				mEndColorVariance = value;
 		}
 		
@@ -2576,7 +2580,7 @@ package de.flintfabrik.starling.display
 		
 		public function set startColor(value:ColorArgb):void
 		{
-			if(value)
+			if (value)
 				mStartColor = value;
 		}
 		
@@ -2594,7 +2598,7 @@ package de.flintfabrik.starling.display
 		
 		public function set startColorVariance(value:ColorArgb):void
 		{
-			if(value)
+			if (value)
 				mStartColorVariance = value;
 		}
 		

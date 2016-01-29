@@ -697,7 +697,8 @@ package de.flintfabrik.starling.display.FFParticleSystem
 						var y:Number = parseFloat(subTexture.attribute("y"));
 						var width:Number = parseFloat(subTexture.attribute("width"));
 						var height:Number = parseFloat(subTexture.attribute("height"));
-						mFrameLUT[i + l * animationLoopLength] = new Frame(w, h, x, y, width, height);
+						var rotated:Boolean = Boolean(subTexture.attribute("rotated") == 1 || subTexture.attribute("rotated") == true);
+						mFrameLUT[i + l * animationLoopLength] = new Frame(w, h, x, y, width, height, rotated);
 					}
 				}
 				
@@ -714,12 +715,12 @@ package de.flintfabrik.starling.display.FFParticleSystem
 					st = SubTexture(texture);
 					var wf:Number = st.parent.width * st.scale;
 					var hf:Number = st.parent.height * st.scale;
-					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, st.clipping.x * wf, st.clipping.y * hf, st.clipping.width * wf, st.clipping.height * hf);
+					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, st.clipping.x * wf, st.clipping.y * hf, st.clipping.width * wf, st.clipping.height * hf, st.rotated);
 				}
 				else
 				{
 					//rootTexture
-					mFrameLUT[0] = new Frame(texture.width, texture.height, 0, 0, texture.width, texture.height);
+					mFrameLUT[0] = new Frame(texture.width, texture.height, 0, 0, texture.width, texture.height, false);
 				}
 			}
 			

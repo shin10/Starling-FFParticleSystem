@@ -820,7 +820,8 @@ package de.flintfabrik.starling.display
 				if (mTexture is SubTexture)
 				{
 					var st:SubTexture = SubTexture(mTexture);
-					var frame:Frame = new Frame(1, 1, st.clipping.x, st.clipping.y, st.clipping.width, st.clipping.height, st.rotated);
+					var rect:Rectangle = st.clipping;
+					var frame:Frame = new Frame(1, 1, rect.x, rect.y, rect.width, rect.height, st.rotated);
 					frame.particleHalfWidth = (mTexture.width) >> 1;
 					frame.particleHalfHeight = (mTexture.height) >> 1;
 					mFrameLUT = new <Frame>[frame];

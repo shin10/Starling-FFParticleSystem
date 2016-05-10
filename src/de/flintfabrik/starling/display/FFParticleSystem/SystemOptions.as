@@ -715,7 +715,8 @@ package de.flintfabrik.starling.display.FFParticleSystem
 					st = SubTexture(texture);
 					var wf:Number = st.parent.width * st.scale;
 					var hf:Number = st.parent.height * st.scale;
-					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, st.clipping.x * wf, st.clipping.y * hf, st.clipping.width * wf, st.clipping.height * hf, st.rotated);
+					var rect:Rectangle = st.clipping;
+					mFrameLUT[0] = new Frame(st.root.nativeWidth, st.root.nativeHeight, rect.x * wf, rect.y * hf, rect.width * wf, rect.height * hf, st.rotated);
 				}
 				else
 				{

@@ -815,23 +815,6 @@ package de.flintfabrik.starling.display
 		{
 			parseSystemOptions(config);
 			
-			if (!mFrameLUT)
-			{
-				if (mTexture is SubTexture)
-				{
-					var st:SubTexture = SubTexture(mTexture);
-					var rect:Rectangle = st.clipping;
-					var frame:Frame = new Frame(1, 1, rect.x, rect.y, rect.width, rect.height, st.rotated);
-					frame.particleHalfWidth = (mTexture.width) >> 1;
-					frame.particleHalfHeight = (mTexture.height) >> 1;
-					mFrameLUT = new <Frame>[frame];
-				}
-				else
-				{
-					mFrameLUT = new <Frame>[new Frame(mTexture.root.width, mTexture.root.height, 0, 0, mTexture.width, mTexture.height)];
-				}
-			}
-			
 			mEmissionRate = mMaxNumParticles / mLifespan;
 			mEmissionTime = 0.0;
 			mFrameTime = 0.0;
@@ -843,7 +826,7 @@ package de.flintfabrik.starling.display
 				defaultJuggler = Starling.juggler;
 			
 			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
-			addedToStageHandler(null)
+			addedToStageHandler(null);
 		
 		}
 		

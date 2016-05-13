@@ -37,7 +37,6 @@ package de.flintfabrik.starling.display
 	import starling.errors.MissingContextError;
 	import starling.events.Event;
 	import starling.filters.FragmentFilter;
-	import starling.textures.SubTexture;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	import starling.utils.MatrixUtil;
@@ -976,7 +975,7 @@ package de.flintfabrik.starling.display
 			if (endSize < 0.1)
 				endSize = 0.1;
 			
-			var firstFrameWidth:Number = mFrameLUT[0].particleHalfWidth << 1;
+			var firstFrameWidth:Number = (mFrameLUT[0].rotated ? mFrameLUT[0].particleHalfHeight : mFrameLUT[0].particleHalfWidth) << 1;
 			particle.scale = startSize / firstFrameWidth;
 			particle.scaleDelta = ((endSize - startSize) / lifespan) / firstFrameWidth;
 			particle.frameIdx = particle.frame = mRandomStartFrames ? mAnimationLoopLength * ((sRandomSeed = (sRandomSeed * 16807) & 0x7FFFFFFF) / 0x80000000) : 0;
@@ -1627,12 +1626,12 @@ package de.flintfabrik.starling.display
 								break;
 							}
 						}
-						renderCustom(support, alpha * parentAlpha, support.blendMode);
+						renderCustom(support);
 					}
 				}
 				else
 				{
-					renderCustom(support, alpha * parentAlpha, support.blendMode);
+					renderCustom(support);
 				}
 			}
 			//reset filter
@@ -1643,7 +1642,7 @@ package de.flintfabrik.starling.display
 		/** @private */
 		private var batchBounds:Rectangle = new Rectangle();
 		
-		private function renderCustom(support:RenderSupport, parentAlpha:Number = 1.0, blendMode:String = null):void
+		private function renderCustom(support:RenderSupport):void
 		{
 			sVertexBufferIdx = ++sVertexBufferIdx % sNumberOfVertexBuffers;
 			

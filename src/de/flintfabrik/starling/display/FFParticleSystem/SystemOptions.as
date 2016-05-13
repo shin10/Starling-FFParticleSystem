@@ -501,7 +501,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				
 				node = config.animation.numberOfAnimatedFrames;
 				if (node.length())
-					target.lastFrame = (node.length() ? int(target.firstFrame) + (target.animationLength = getIntValue(node)) : target.lastFrame);
+					target.lastFrame = node.length() ? int(target.firstFrame) + (target.animationLength = getIntValue(node)) : target.lastFrame;
 				
 				node = config.animation.loops;
 				if (node.length())
@@ -713,12 +713,9 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				{
 					//subtexture
 					st = SubTexture(texture);
-					var wf:Number = st.parent.width * st.scale;
-					var hf:Number = st.parent.height * st.scale;
 					rect = st.clipping;
-					var frame:Frame = new Frame(1, 1, rect.x, rect.y, rect.width, rect.height, st.rotated);
-					frame.particleHalfWidth = (st.rotated ? st.height : st.width) >> 1;
-					frame.particleHalfHeight = (st.rotated ? st.width : st.height) >> 1;
+					var tr:Texture = texture.root
+					var frame:Frame = new Frame(tr.nativeWidth, tr.nativeHeight, rect.x * tr.nativeWidth, rect.y * tr.nativeHeight, rect.width * tr.nativeWidth, rect.height * tr.nativeHeight, st.rotated);
 					mFrameLUT[0] = frame;
 				}
 				else

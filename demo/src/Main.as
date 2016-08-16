@@ -9,6 +9,7 @@ package
 	 * ...
 	 * @author Michael Trenkler
 	 */
+	
 	[SWF(width="1024", height="576", frameRate="60", backgroundColor="#222222")]
 	public class Main extends Sprite 
 	{
@@ -25,7 +26,7 @@ package
 			// entry point
 			//new Startup(stage);
 			stage.color = 0xFF000000;
-			new FFParticleDemo(stage);
+			new DemoMain(stage);
 		}
 		
 	}

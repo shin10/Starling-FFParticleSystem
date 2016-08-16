@@ -1,14 +1,14 @@
 // =================================================================================================
 //
-//	Starling Framework - Particle System Extension
-//	Copyright 2011 Gamua OG. All Rights Reserved.
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
 //
 //	This program is free software. You can redistribute and/or modify it
 //	in accordance with the terms of the accompanying license agreement.
 //
 // =================================================================================================
 
-package de.flintfabrik.starling.utils
+package de.flintfabrik.starling.extensions.FFParticleSystem.utils
 {
     public class ColorArgb
     {

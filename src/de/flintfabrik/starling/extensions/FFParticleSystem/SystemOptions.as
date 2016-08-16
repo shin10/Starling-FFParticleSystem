@@ -1,17 +1,17 @@
 // =================================================================================================
 //
-//	Starling Framework - Particle System Extension
-//	Copyright 2011 Gamua OG. All Rights Reserved.
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
 //
 //	This program is free software. You can redistribute and/or modify it
 //	in accordance with the terms of the accompanying license agreement.
 //
 // =================================================================================================
 
-package de.flintfabrik.starling.display.FFParticleSystem
+package de.flintfabrik.starling.extensions.FFParticleSystem
 {
-	import de.flintfabrik.starling.display.FFParticleSystem.Frame;
-	import de.flintfabrik.starling.utils.ColorArgb;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.Frame;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.utils.ColorArgb;
 	import flash.display3D.Context3DBlendFactor;
 	import flash.geom.Rectangle;
 	import starling.filters.FragmentFilter;
@@ -663,7 +663,7 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				{
 					// look for subtexture with same properties as the subtexture, on success we'll use it as firstFrame
 					var st:SubTexture = SubTexture(texture);
-					var rect:Rectangle = st.clipping;
+					var rect:Rectangle = st.region;
 					
 					rect.x *= st.root.nativeWidth;
 					rect.y *= st.root.nativeHeight;
@@ -713,9 +713,9 @@ package de.flintfabrik.starling.display.FFParticleSystem
 				{
 					//subtexture
 					st = SubTexture(texture);
-					rect = st.clipping;
-					var tr:Texture = texture.root
-					var frame:Frame = new Frame(tr.nativeWidth, tr.nativeHeight, rect.x * tr.nativeWidth, rect.y * tr.nativeHeight, rect.width * tr.nativeWidth, rect.height * tr.nativeHeight, st.rotated);
+					rect = st.region;
+					var tr:Texture = texture.root;
+					var frame:Frame = new Frame(tr.nativeWidth, tr.nativeHeight, rect.x, rect.y, rect.width, rect.height, st.rotated);
 					mFrameLUT[0] = frame;
 				}
 				else

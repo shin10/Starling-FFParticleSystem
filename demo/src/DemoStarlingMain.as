@@ -1,9 +1,11 @@
 package
 {
-	import de.flintfabrik.starling.display.FFParticleSystem;
-	import de.flintfabrik.starling.display.FFParticleSystem.Particle;
-	import de.flintfabrik.starling.display.FFParticleSystem.SystemOptions;
-	import de.flintfabrik.starling.utils.ColorArgb;
+	import de.flintfabrik.starling.extensions.FFParticleSystem;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.Particle;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.SystemOptions;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.styles.FFParticleStyle;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.styles.FFParticleStyleClone;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.utils.ColorArgb;
 	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
@@ -12,6 +14,7 @@ package
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
@@ -19,70 +22,75 @@ package
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	
-	public class FFPDemo extends Sprite
+	import de.flintfabrik.starling.extensions.FFParticleSystem.core.ffparticlesystem_internal;
+	use namespace ffparticlesystem_internal;
+	
+	public class DemoStarlingMain extends Sprite
 	{
 		private var firstRun:Boolean = true;
 		private var bgr:Image;
 		private var systems:Object;
+		private var particleSystemDefaultStyle:Class;
+		private var ffpsStyle:FFParticleStyle;
 		
 		// texture atlas
-		[Embed(source="../media/taA.xml",mimeType="application/octet-stream")]
+		[Embed(source = "../media/taA.xml", mimeType = "application/octet-stream")]
 		private static const AtlasXML:Class;
-		[Embed(source="../media/taA.png")]
+		[Embed(source = "../media/taA.png")]
 		private static const AtlasTexture:Class;
 		private var atlasTexture:Texture = Texture.fromBitmap(new AtlasTexture());
 		private var atlasXML:XML = XML(new AtlasXML());
 		private var textureAtlas:TextureAtlas = new TextureAtlas(atlasTexture, atlasXML);
 		private var texUFO:Texture = textureAtlas.getTexture("ufo");
 		
-		[Embed(source="../media/starling_bird.xml",mimeType="application/octet-stream")]
+		[Embed(source = "../media/starling_bird.xml", mimeType = "application/octet-stream")]
 		private static const StarlingAtlasXML:Class;
-		[Embed(source="../media/starling_bird.png")]
+		[Embed(source = "../media/starling_bird.png")]
 		private static const StarlingAtlasTexture:Class;
 		
 		// pex config xml files
 		
-		[Embed(source="../media/starling_bird.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/starling_bird.pex", mimeType = "application/octet-stream")]
 		private static const StarlingConfig:Class;
 		private var starlingConfig:XML = XML(new StarlingConfig());
 		
-		[Embed(source="../media/burning.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/burning.pex", mimeType = "application/octet-stream")]
 		private static const BurningConfig:Class;
 		private var burningConfig:XML = XML(new BurningConfig());
 		
-		[Embed(source="../media/burningHouseLeft.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/burningHouseLeft.pex", mimeType = "application/octet-stream")]
 		private static const BurningHouseLeftConfig:Class;
 		private var burningHouseLeftConfig:XML = XML(new BurningHouseLeftConfig());
 		
-		[Embed(source="../media/burningHouseRight.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/burningHouseRight.pex", mimeType = "application/octet-stream")]
 		private static const BurningHouseRightConfig:Class;
 		private var burningHouseRightConfig:XML = XML(new BurningHouseRightConfig());
 		
-		[Embed(source="../media/smokeScreen.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/smokeScreen.pex", mimeType = "application/octet-stream")]
 		private static const SmokeScreenConfig:Class;
 		private var smokeScreenConfig:XML = XML(new SmokeScreenConfig());
 		
-		[Embed(source="../media/ufo.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/ufo.pex", mimeType = "application/octet-stream")]
 		private static const UFOConfig:Class;
 		private var ufoConfig:XML = XML(new UFOConfig());
 		
-		[Embed(source="../media/jets.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/jets.pex", mimeType = "application/octet-stream")]
 		private static const JetsConfig:Class;
 		private var jetsConfig:XML = XML(new JetsConfig());
 		
-		[Embed(source="../media/laserChaos.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/laserChaos.pex", mimeType = "application/octet-stream")]
 		private static const LaserChaosConfig:Class;
 		private var laserChaosConfig:XML = XML(new LaserChaosConfig());
 		
-		[Embed(source="../media/ash.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/ash.pex", mimeType = "application/octet-stream")]
 		private static const AshConfig:Class;
 		private var ashConfig:XML = XML(new AshConfig());
 		
-		[Embed(source="../media/dust.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/dust.pex", mimeType = "application/octet-stream")]
 		private static const DustConfig:Class;
 		private var dustConfig:XML = XML(new DustConfig());
 		
-		[Embed(source="../media/sparks.pex",mimeType="application/octet-stream")]
+		[Embed(source = "../media/sparks.pex", mimeType = "application/octet-stream")]
 		private static const SparksConfig:Class;
 		private var sparksConfig:XML = XML(new SparksConfig());
 		
@@ -119,12 +127,8 @@ package
 		private var soStarling:SystemOptions = SystemOptions.fromXML(starlingConfig, Texture.fromBitmap(new StarlingAtlasTexture()), XML(new StarlingAtlasXML())).appendFromObject({customFunction: customFunctionBirds, sortFunction: sizeSort, forceSortFlag: true});
 		private var soUFOHit:SystemOptions = soLaserChaos.clone();
 		
-		public function FFPDemo()
+		public function DemoStarlingMain()
 		{
-			//trace("create particle systems")
-			
-			FFParticleSystem.init(4096, false, 4096, 16);
-			
 			// add event handlers for touch and keyboard
 			
 			soUFOHit.duration = 0.25;
@@ -147,7 +151,7 @@ package
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-			//addEventListener(Event.ENTER_FRAME, efh);
+			//addEventListener(Event.ENTER_FRAME, efh); // simulation of cpu bound scene
 		}
 		
 		private function efh(e:Event):void
@@ -159,38 +163,47 @@ package
 		
 		private function stageResize(e:ResizeEvent):void
 		{
-			var viewPortRectangle:Rectangle = new Rectangle();
-			this.scaleX = e.width / bgr.width;
-			this.scaleY = e.height / bgr.height;
-			this.scaleX = this.scaleY = Math.min(this.scaleX, this.scaleY);
-			this.x = (e.width - this.width) / 2;
-			this.y = (e.height - this.height) / 2;
-			this.clipRect = new Rectangle(bgr.x, bgr.y, bgr.width, bgr.height);
+			updateStageContent(e.width, e.height);
+		}
+		
+		private function updateStageContent(width:Number, height:Number):void
+		{
+			var scaleX:Number = width / bgr.texture.width;
+			var scaleY:Number = height / bgr.texture.height;
+			this.scale = Math.min(scaleX, scaleY);
 			
-			viewPortRectangle.width = e.width;
-			viewPortRectangle.height = e.height
+			this.x = (width - bgr.width * this.scale) / 2;
+			this.y = (height - bgr.height * this.scale) / 2;
+			
+			if (!this.mask)
+			{
+				this.mask = new Quad(1, 1);
+			}
+			this.mask.x = bgr.x;
+			this.mask.y = bgr.y;
+			this.mask.width = bgr.width;
+			this.mask.height = bgr.height;
+			
+			var viewPortRectangle:Rectangle = new Rectangle();
+			viewPortRectangle.width = width;
+			viewPortRectangle.height = height;
+			
+			// assign the new stage width and height:
+			stage.stageWidth = width;
+			stage.stageHeight = height;
 			
 			// resize the viewport:
 			Starling.current.viewPort = viewPortRectangle;
-			
-			// assign the new stage width and height:
-			stage.stageWidth = e.width;
-			stage.stageHeight = e.height;
 		}
 		
 		private function onAddedToStage(event:Event):void
 		{
-			//trace(Starling.context);
-			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
 			bgr = new Image(textureAtlas.getTexture("timesSquare"));
 			addChild(bgr);
+			updateStageContent(Starling.current.nativeStage.stageWidth, Starling.current.nativeStage.stageHeight);
 			
 			stage.addEventListener(ResizeEvent.RESIZE, stageResize);
-			this.clipRect = new Rectangle(bgr.x, bgr.y, bgr.width, bgr.height);
-			Starling.current.viewPort = clipRect;
-			stage.stageWidth = clipRect.width;
-			stage.stageHeight = clipRect.height;
 			
 			var t:Timer = new Timer(1000, 1);
 			t.addEventListener(TimerEvent.TIMER_COMPLETE, autoStartTimerComplete);
@@ -215,7 +228,24 @@ package
 		
 		private function updateScene(advanceTime:Boolean = false):void
 		{
-			firstRun = false;
+			if (firstRun)
+			{
+				// FFParticleSystem.defaultStyle = FFParticleStyleClone;
+				particleSystemDefaultStyle = FFParticleSystem.defaultStyle;
+				ffpsStyle = new particleSystemDefaultStyle();
+				firstRun = false;
+			}
+			
+			if (!FFParticleSystem.poolCreated)
+			{
+				FFParticleSystem.initPool(4096, false);
+			}
+			
+			if (ffpsStyle && !ffpsStyle.effectType.buffersCreated)
+			{
+				ffpsStyle.effectType.createBuffers(4096, 16);
+				FFParticleStyleClone.effectType.createBuffers(4096, 16);
+			}
 			
 			for (var i:int = 0; i < systems.length; ++i)
 			{
@@ -223,7 +253,7 @@ package
 				var s:FFParticleSystem = this[systems[i].name];
 				if (!s && systems[i].active)
 				{
-					this[systems[i].name] = s = new FFParticleSystem(this[systems[i].name.replace(/^ps/, 'so')]);
+					this[systems[i].name] = s = new FFParticleSystem(this[systems[i].name.replace(/^ps/, 'so')], Math.random()>.5?new FFParticleStyleClone():null);
 				}
 				
 				if (systems[i].active)
@@ -292,13 +322,13 @@ package
 						ps = new FFParticleSystem(soUFOHit);
 						ufo.customValues.psHit = ps;
 						ps.addEventListener(Event.COMPLETE, function(e:Event):void
-							{
-								var ps:FFParticleSystem = e.currentTarget as FFParticleSystem;
-								ps.stop();
-								ps.dispose();
-								if (ufo.customValues)
-									ufo.customValues.psHit = null;
-							});
+						{
+							var ps:FFParticleSystem = e.currentTarget as FFParticleSystem;
+							ps.stop();
+							ps.dispose();
+							if (ufo.customValues)
+								ufo.customValues.psHit = null;
+						});
 						addChild(ps);
 						ps.start();
 						
@@ -444,6 +474,7 @@ package
 		
 		private function onKey(event:KeyboardEvent):void
 		{
+			//trace('instances', FFParticleStyle.effectType._instances.length, FFParticleStyleClone.effectType._instances.length)
 			var s:FFParticleSystem;
 			
 			if (event.shiftKey)
@@ -454,7 +485,7 @@ package
 					{
 						if (numChildren > 1)
 						{
-							//trace("clear all");
+							trace("clear all");
 							for (var i:int = numChildren - 1; i > 0; --i)
 							{
 								var obj:DisplayObject = getChildAt(i);
@@ -473,7 +504,7 @@ package
 						}
 						else
 						{
-							//trace("reset all");
+							trace("reset all");
 							for (i = 0; i < systems.length; ++i)
 							{
 								if (systems[i].name != "psStarling")
@@ -495,11 +526,11 @@ package
 								systems[i].paused = false;
 								if (!systems[i].active)
 								{
-									//trace("dispose", systems[i].name)
 									// dispose
 									obj = FFParticleSystem(this[systems[i].name]);
 									if (obj)
 									{
+										trace('dispose', systems[i].name);
 										obj.dispose();
 										this[systems[i].name] = null;
 										systems[i].paused = false;
@@ -520,7 +551,7 @@ package
 				if (event.keyCode == 32)
 				{
 					var play:Boolean = !sceneHasRunningTweens();
-					//trace("toggle all", play)
+					trace("toggle all", play)
 					for (i = numChildren - 1; i > 0; --i)
 					{
 						obj = getChildAt(i);
@@ -542,7 +573,7 @@ package
 							if (sys)
 							{
 								play = !Starling.juggler.contains(sys);
-								//trace("toggle", systems[i].name, play)
+								trace("toggle", systems[i].name, play)
 								play ? sys.resume() : sys.pause();
 								systems[i].paused = !play;
 							}

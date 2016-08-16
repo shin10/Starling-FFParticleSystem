@@ -10,21 +10,19 @@ package
 	
 	[SWF(width="1024",height="576",frameRate="60",backgroundColor="#222222")]
 	
-	public class FFParticleDemo extends Sprite
+	public class DemoMain extends Sprite
 	{
 		private var mStarling:Starling;
 		
-		public function FFParticleDemo(stage:Stage)
+		public function DemoMain(stage:Stage)
 		{
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			Starling.handleLostContext = true;
-			
-			mStarling = new Starling(FFPDemo, stage, null, null, "auto", Context3DProfile.BASELINE);
+			mStarling = new Starling(DemoStarlingMain, stage, null, null, "auto", Context3DProfile.STANDARD_EXTENDED);
 			mStarling.enableErrorChecking = isDebugBuild();
+			mStarling.skipUnchangedFrames = true;
 			mStarling.showStats = true;
-			//mStarling.showStatsAt("right", "top", 1);
 			mStarling.start();
 			trace("isDebugger", isDebugBuild())
 		}

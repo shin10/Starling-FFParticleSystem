@@ -883,7 +883,7 @@ package de.flintfabrik.starling.extensions
 			for (var i:int = registeredEffects.length - 1; i >= 0; --i)
 			{
 				var effectClass:Class = registeredEffects[i];
-				effectClass.disposeBuffers();
+				effectClass['disposeBuffers']();
 			}
 			disposePool();
 		}
@@ -1042,7 +1042,7 @@ package de.flintfabrik.starling.extensions
 		{
 			for each (var effectClass:Class in registeredEffects)
 			{
-				effectClass.createBuffers(effectClass.bufferSize);
+				effectClass['createBuffers']();
 			}
 		}
 		

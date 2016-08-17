@@ -59,7 +59,7 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 		private static var $indexBuffer:IndexBuffer3D;
 		private static var $vertexBufferIdx:int = -1;
 		private static var $vertexBuffers:Vector.<VertexBuffer3D>;
-		private static var $numberOfVertexBuffers:int;
+		private static var $numberOfVertexBuffers:uint = 1;
 		private static var $renderAlpha:Vector.<Number> = new Vector.<Number>(4, true);
 		private static var $instances:Vector.<FFParticleSystem> = new Vector.<FFParticleSystem>(0, false);
 		
@@ -303,10 +303,11 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 		 * creating vertex and index buffers for the number of particles.
 		 * @param	numParticles a value between 1 and 16383
 		 */
-		public static function createBuffers(bufferSize:uint = 0, numberOfBuffers:uint = 1):void
+		public static function createBuffers(bufferSize:uint = 0, numberOfBuffers:uint = 0):void
 		{
 			if (!bufferSize && $bufferSize)
 				bufferSize = $bufferSize;
+				
 			if (bufferSize > MAX_CAPACITY)
 			{
 				bufferSize = MAX_CAPACITY;
@@ -318,7 +319,9 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 				trace("Warning: bufferSize can't be lower than 1 and is set to it's maximum value (16383)");
 			}
 			$bufferSize = bufferSize;
-			$numberOfVertexBuffers = numberOfBuffers;
+			
+			if (numberOfBuffers)
+				$numberOfVertexBuffers = numberOfBuffers;
 			
 			if ($instances)
 				for (var i:int = 0; i < $instances.length; ++i)

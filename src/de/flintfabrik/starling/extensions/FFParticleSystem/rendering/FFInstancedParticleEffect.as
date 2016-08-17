@@ -51,7 +51,7 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 		private static var $vertexBuffer:VertexBuffer3D;
 		private static var $instanceBufferIdx:int = -1;
 		private static var $instanceBuffers:Vector.<VertexBuffer3D>;
-		private static var $numberOfInstanceBuffers:int;
+		private static var $numberOfInstanceBuffers:uint = 1;
 		private static var $renderAlpha:Vector.<Number> = new Vector.<Number>(4, true);
 		
 		public static function get isSupported():Boolean
@@ -63,7 +63,7 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 				if (context == null)
 					throw new MissingContextError();
 				
-				var testBuffer:VertexBuffer3D = context.createVertexBufferForInstances(5, 12, 1, "dynamicDraw");
+				var testBuffer:VertexBuffer3D = context['createVertexBufferForInstances'](5, 12, 1, "dynamicDraw");
 				testBuffer.dispose();
 				trace('[FFInstancedParticleEffect] instance drawing supported');
 				return true;
@@ -73,6 +73,7 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 				trace('[FFInstancedParticleEffect] Feature not available on this platform.');
 				return false;
 			}
+			return false;
 		}
 		
 		private var __maxCapacity:int;
@@ -127,7 +128,7 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 			context.setVertexBufferAt(5, instanceBuffer, 10, Context3DVertexBufferFormat.FLOAT_4);
 			
 			beforeDraw(context);
-			context.drawTrianglesInstanced($indexBuffer, numParticles, firstIndex, 2);
+			context['drawTrianglesInstanced']($indexBuffer, numParticles, firstIndex, 2);
 			afterDraw(context);
 		
 		}
@@ -224,7 +225,7 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 		 * creating vertex and index buffers for the number of particles.
 		 * @param	numParticles a value between 1 and 16383
 		 */
-		public static function createBuffers(bufferSize:uint = 0, numberOfBuffers:uint = 1):void
+		public static function createBuffers(bufferSize:uint = 0, numberOfBuffers:uint = 0):void
 		{
 			if (!bufferSize && $bufferSize)
 				bufferSize = $bufferSize;
@@ -241,7 +242,8 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 			}
 			$bufferSize = bufferSize;
 			
-			$numberOfInstanceBuffers = numberOfBuffers;
+			if (numberOfBuffers)
+				$numberOfInstanceBuffers = numberOfBuffers;
 			
 			if ($instanceBuffers)
 				for (var i:int = 0; i < $instanceBuffers.length; ++i)
@@ -267,7 +269,7 @@ package de.flintfabrik.starling.extensions.FFParticleSystem.rendering
 			$instanceBuffers = new Vector.<VertexBuffer3D>($numberOfInstanceBuffers, true);
 			for (i = 0; i < $numberOfInstanceBuffers; ++i)
 			{
-				$instanceBuffers[i] = context.createVertexBufferForInstances(numInstances, ELEMENTS_PER_PARTICLE, 1, "dynamicDraw");
+				$instanceBuffers[i] = context['createVertexBufferForInstances'](numInstances, ELEMENTS_PER_PARTICLE, 1, "dynamicDraw");
 			}
 			
 			var zeroBytes:ByteArray = new ByteArray();
